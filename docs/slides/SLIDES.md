@@ -88,7 +88,7 @@ NASA Space Apps Challenge 2026: *Field Shift: Adapting Farms with NASA Data*
 - **Safe Alternate Wetting and Drying (Safe AWD):**
   Install 30 cm field water tube (*pani pipe*); saves 15–20% irrigation water without yield penalty.
 - **Submergence-Tolerant Rice (Swarna-Sub1 / SUB1A):**
-  Withstands 14 days of complete underwater submergence (+1.8 t/ha yield recovery).
+  Withstands 14 days of complete underwater submergence (+1.0 to 3.0 t/ha yield recovery, IRRI trials).
 - **Drought-Tolerant Cultivars (Sahbhagi Dhan / DRR 42):**
   Provides +0.8 to 1.0 t/ha advantage under drought stress.
 - **Terminal Heat Defense (HD 3385 & Residue Mulching):**

@@ -167,7 +167,7 @@ SLIDE 5: ARCHIVED TELEMETRY REPLAYS: VERIFIED CLIMATE SHOCKS
 SLIDE 6: GROUNDED ACTIONABLE ADVISORIES & STRV BUFFERS
 --------------------------------------------------------------------------------
 - Safe AWD (Field Water Tube): Saves 15-20% irrigation water without yield penalty.
-- Swarna-Sub1: Withstands 14 days of complete underwater submergence (+1.8 t/ha protected).
+- Swarna-Sub1: Withstands 14 days of complete underwater submergence (+1.0 to 3.0 t/ha protected, IRRI trials).
 - Sahbhagi Dhan: Drought-tolerant rice (+0.8 to 1.0 t/ha advantage under water stress).
 - HD 3385 & Residue Mulch: Protects wheat pollen viability and conserves seedbed moisture.
 - Multilingual in 6 Regional Languages: English, Hindi, Tamil, Bengali, Punjabi, Telugu.
@@ -189,8 +189,8 @@ SLIDE 7: OPEN SOURCE, PROVENANCE & SUB-SECOND ARCHITECTURE
 
 | Time | Video Screen Action | Spoken Voiceover (or On-Screen Captions) | English Subtitles |
 | :--- | :--- | :--- | :--- |
-| **0:00 - 0:06** | Browser opens to KisanRadar map. User clicks **Thanjavur, Tamil Nadu**. Multi-hazard gauges appear. | *"Smallholder farmers face compound climate risks, but NASA telemetry remains out of reach. Welcome to KisanRadar."* | `Smallholder farmers face compound climate risks, but NASA telemetry remains out of reach. Welcome to KisanRadar.` |
-| **0:06 - 0:13** | Zoom into gauges: Drought, Heat, Flood, Veg. Point to **Stage Gated: Ripening** and **Harvest Readiness Advisory** in Tamil. | *"KisanRadar queries live GPM, SMAP, and POWER feeds, evaluating real percentiles and crop phenology."* | `KisanRadar queries live GPM, SMAP, and POWER feeds, evaluating real percentiles and crop phenology.` |
+| **0:00 - 0:06** | Browser opens to KisanRadar centered on **Ludhiana, Punjab (Wheat)**. Green gauges appear with HIGH confidence (7 live feeds). | *"Smallholder farmers face compound climate risks, but NASA telemetry remains out of reach. Welcome to KisanRadar."* | `Smallholder farmers face compound climate risks, but NASA telemetry remains out of reach. Welcome to KisanRadar.` |
+| **0:06 - 0:13** | Point to **Stage Gated: Emergence** (0% loss, no false alarms) and **Happy Seeder Mulch Advisory**. User clicks **Thanjavur, Tamil Nadu**. | *"KisanRadar queries live GPM, SMAP, and POWER feeds, evaluating real percentiles and crop phenology."* | `KisanRadar queries live GPM, SMAP, and POWER feeds, evaluating real percentiles and crop phenology.` |
 | **0:13 - 0:21** | User clicks **Replay: Punjab 2022 Heat Shock**. Map flies to Punjab. Heat score spikes to 96, MODIS LST Day shows 38°C, and yield impact shows -25%. | *"In historical replay mode, experience the Punjab 2022 heat shock: archived NASA telemetry diagnoses 96 Heat Risk and triggers STRV buffers."* | `Historical replay mode: archived NASA telemetry diagnoses 96 Heat Risk and triggers STRV buffers.` |
 | **0:21 - 0:30** | Scroll to **Live Data Feeds Provenance Strip** and 25-Year Climatological Warming Chart. Language toggle shifts to Punjabi and Hindi. | *"With complete data provenance, zero mock data, and 6 languages, KisanRadar puts NASA Earth observations into farmers' hands."* | `Complete provenance, zero mock data, and 6 languages: NASA Earth observations in farmers' hands.` |
 
