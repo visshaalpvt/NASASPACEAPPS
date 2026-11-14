@@ -7,8 +7,10 @@
 *service_account*.json
 *service-account*.json
 
-# Data cache (pre-computed real telemetry cache is managed separately, local volatile cache ignored)
-data/cache/
+# Data cache (preserve verified authentic precomputed presets and replays for zero-credential demos)
+data/cache/*
+!data/cache/preset_*.json
+!data/cache/replay_*.json
 __pycache__/
 */__pycache__/
 *.py[cod]

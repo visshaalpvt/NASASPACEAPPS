@@ -1,0 +1,292 @@
+{
+  "event_id": "punjab-march-2022-heatwave",
+  "event_title": "Punjab March 2022 Terminal Heatwave",
+  "event_description": "Historical replay of the March 2022 terminal heat shock across the Punjab wheat belt. Extreme March temperatures during wheat grain-filling caused severe pollen sterility and test-weight shriveling. Telemetry below is computed from authentic archived NASA POWER, MODIS, and MERRA-2 feeds.",
+  "lat": 30.9,
+  "lon": 75.85,
+  "replay_date": "2022-03-25",
+  "crop": "wheat",
+  "sowing_date": "2021-11-10",
+  "phenology": {
+    "crop": "wheat",
+    "sowing_date": "2021-11-10",
+    "is_default_sowing_date": false,
+    "days_since_sowing": 136,
+    "base_temperature_c": 5.0,
+    "accumulated_gdd": 1579.8,
+    "current_phenological_stage": "Grain Filling & Dough Stage",
+    "in_heat_sensitive_window": true,
+    "critical_heat_threshold_c": 31.0,
+    "vegetative_heat_threshold_c": 36.0,
+    "active_heat_threshold_c": 31.0,
+    "canopy_active": false,
+    "canopy_status_note": "not applicable at this stage (crop maturity / senescence)"
+  },
+  "risk_scores": {
+    "overall": 35,
+    "drought": 3,
+    "heat": 96,
+    "flood": 0,
+    "vegetation": null,
+    "vegetation_applicable": false,
+    "vegetation_status_note": "not applicable at this stage (crop maturity / senescence)",
+    "weights": {
+      "drought": 0.45,
+      "heat": 0.35,
+      "flood": 0.2,
+      "vegetation": 0.0
+    },
+    "confidence": "low",
+    "confidence_note": "All 2 live data feeds verified and consistent.",
+    "sources_disagree": false,
+    "live_sources_count": 2,
+    "score_arithmetic": {
+      "drought": {
+        "formula": "0.50 * risk(rain_pct) + 0.50 * risk(soil_pct) + dry_spell_boost",
+        "mapping_rule": ">=50th pct -> 0 risk; <=5th pct -> 100 risk; linear in between: (50 - p) / 45 * 100",
+        "primary_rain_source": "NASA POWER MERRA-2",
+        "primary_rain_percentile": 47.6,
+        "rain_risk_component": 5.3,
+        "primary_soil_source": "NASA POWER MERRA-2 GWETROOT",
+        "primary_soil_percentile": 76.2,
+        "soil_risk_component": 0.0,
+        "base_drought_raw": 2.6,
+        "dry_spell_days": 22,
+        "dry_spell_percentile": 78.6,
+        "dry_spell_boost": 0.0,
+        "final_drought_score": 3
+      },
+      "heat": {
+        "in_heat_sensitive_stage": true,
+        "hot_days_past_14d": 13,
+        "hot_days_forecast_7d": 0,
+        "tmax_percentile": 85.7,
+        "heat_score": 96
+      },
+      "flood": {
+        "imerg_72h_mm": 0.0,
+        "forecast_max_3d_rain_mm": 0.0,
+        "peak_3d_rain_mm": 0.0,
+        "local_historical_95th_pct_3d_mm": 12.8,
+        "flood_absolute_floor_applied": true,
+        "flood_score": 0
+      },
+      "overall": {
+        "weights_used": {
+          "drought": 0.45,
+          "heat": 0.35,
+          "flood": 0.2,
+          "vegetation": 0.0
+        },
+        "formula": "sum(weight_i * score_i)",
+        "overall_score": 35
+      }
+    },
+    "score_inputs": {
+      "drought": [
+        "NASA GPM IMERG 30d Percentile (Primary)",
+        "NASA SMAP L4 Root-Zone Percentile (Primary)",
+        "Normalized Dry Spell Percentile"
+      ],
+      "heat": [
+        "Phenology Gated Threshold",
+        "NASA POWER T2M_MAX Anomaly",
+        "Open-Meteo NWP Forecast"
+      ],
+      "flood": [
+        "NASA GPM IMERG 72h Rain",
+        "Open-Meteo 3-day NWP Rain",
+        "Local 25-yr 95th Percentile",
+        "20mm Flood Floor"
+      ],
+      "vegetation": [
+        "MODIS MOD13Q1 2001+ Baseline Anomaly",
+        "Landsat 8/9 30m Parcel NDVI",
+        "Phenology Stage Gate"
+      ]
+    }
+  },
+  "indicators": {
+    "rain_deficit_30d": {
+      "name": "30-Day Rainfall Accumulation",
+      "primary_source": "NASA POWER MERRA-2",
+      "primary_rain_30d_mm": 17.4,
+      "primary_rain_percentile": 47.6,
+      "imerg_30d_mm": null,
+      "imerg_30d_percentile": null,
+      "imerg_historical_mean_mm": null,
+      "imerg_baseline_years": null,
+      "power_cross_check_30d_mm": 17.4,
+      "power_cross_check_percentile": 47.6,
+      "power_historical_mean_mm": 28.5,
+      "sources_disagree": false,
+      "disagreement_pct": 0.0,
+      "disagreement_note": "Cross-sensor consistency between IMERG satellite and POWER reanalysis confirmed.",
+      "unit": "mm"
+    },
+    "rain_deficit_90d": {
+      "name": "90-Day Seasonal Rainfall Accumulation",
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "current_value_mm": 169.6,
+      "historical_mean_mm": 83.5,
+      "anomaly_mm": 86.0,
+      "percentile": 95.0,
+      "sample_size_years": 20,
+      "unit": "mm"
+    },
+    "soil_moisture": {
+      "name": "Root-Zone Soil Wetness",
+      "primary_source": "NASA POWER MERRA-2 GWETROOT",
+      "primary_soil_percentile": 76.2,
+      "smap_rootzone_m3m3": null,
+      "smap_surface_m3m3": null,
+      "smap_rootzone_wetness": null,
+      "smap_rootzone_wetness_percentile": null,
+      "smap_historical_mean": null,
+      "smap_baseline_years": null,
+      "power_gwetroot_fraction": 0.424,
+      "power_gwetroot_percentile": 76.2,
+      "power_gwetroot_anomaly": 0.044,
+      "sample_size_years": 21,
+      "unit": "fraction (0-1) / m^3/m^3"
+    },
+    "vegetation_vigor": {
+      "name": "Vegetation Canopy Health (NDVI)",
+      "canopy_active": false,
+      "canopy_status_note": "not applicable at this stage (crop maturity / senescence)",
+      "modis_regional_ndvi_250m": 0.285,
+      "modis_ndvi_historical_mean": 0.257,
+      "modis_ndvi_anomaly": 0.028,
+      "landsat_field_ndvi_30m": null,
+      "field_vs_regional_diff": null,
+      "dataset_ids": "MODIS/061/MOD13Q1 (250m) & LANDSAT/LC08/C02/T1_L2 (30m)",
+      "unit": "NDVI index (-1 to 1)"
+    },
+    "heat_stress": {
+      "name": "Heat Stress (Wheat Threshold: 31.0\u00b0C)",
+      "mean_tmax_14d_c": 35.3,
+      "historical_tmax_14d_mean_c": 31.8,
+      "tmax_14d_anomaly_c": 3.5,
+      "tmax_percentile": 85.7,
+      "active_threshold_c": 31.0,
+      "hot_days_past_14d": 13,
+      "hot_days_forecast_7d": 0,
+      "in_heat_sensitive_stage": true,
+      "phenological_stage": "Grain Filling & Dough Stage",
+      "modis_lst_day_c": 38.0,
+      "landsat_canopy_lst_c": null,
+      "unit": "\u00b0C"
+    },
+    "flood_hazard": {
+      "name": "Extreme Precipitation & Flood Accumulation",
+      "imerg_72h_mm": null,
+      "forecast_max_3d_rain_mm": 0,
+      "peak_3d_rain_mm": 0.0,
+      "local_historical_95th_pct_3d_mm": 12.8,
+      "flood_absolute_floor_mm": 20.0,
+      "historical_95th_exceeded": false,
+      "sample_size_years": 21,
+      "unit": "mm"
+    },
+    "dry_spell": {
+      "name": "Consecutive Dry Spell Duration",
+      "consecutive_days_under_1mm": 22,
+      "dry_spell_percentile": 78.6,
+      "historical_spells_evaluated": 21,
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "unit": "days"
+    },
+    "groundwater_trend": {
+      "name": "Regional Total Water Storage Trend",
+      "dataset_id": "NASA_GRACE/MASS_GRIDS_V04/MASCON_CRI",
+      "regional_trend_cm_per_year": null,
+      "depletion_trend_cm_per_year": null,
+      "current_anomaly_cm": null,
+      "spatial_resolution_caveat": "Regional (~300 km footprint, observed through 2024-09); NOT parcel-scale groundwater table",
+      "unit": "cm/year"
+    },
+    "climate_warming_trend": {
+      "name": "Decadal Surface Warming Trend",
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "warming_trend_c_per_decade": -0.815,
+      "p_value": 0.0006,
+      "r_squared": 0.473,
+      "baseline_span": "2001-2021",
+      "years_evaluated": 21,
+      "caveat": "MERRA-2 grid-point trend; treat with caution",
+      "unit": "\u00b0C/decade"
+    }
+  },
+  "yield_impact": {
+    "yield_applicable": true,
+    "estimation_type": "Literature-Based Scenario Estimate",
+    "documented_range_pct": "10-35% (CIMMYT/ICAR 2022 benchmark)",
+    "baseline_yield_t_ha": 3.4,
+    "predicted_yield_conventional_t_ha": 2.55,
+    "predicted_yield_with_strv_t_ha": 2.55,
+    "yield_loss_unmitigated_pct": 25.0,
+    "yield_protected_by_adaptation_t_ha": 0.0,
+    "loss_drivers": {
+      "terminal_heat_pct": 25.0,
+      "drought_moisture_pct": 0.0,
+      "flood_excess_pct": 0.0
+    },
+    "recommended_interventions": [
+      {
+        "type": "Terminal Heat Defense",
+        "variety": "HD 3385 (Wheat) / Heat-tolerant lines",
+        "protection": "Buffers pollen viability against >31-34\u00b0C terminal heat",
+        "agronomy": "Evening irrigation to lower microclimate canopy temperature by 1.5-2.0\u00b0C; shift spraying away from peak noon hours"
+      }
+    ]
+  },
+  "advisory": {
+    "language": "en",
+    "crop": "wheat",
+    "phenological_stage": "Grain Filling & Dough Stage",
+    "overall_risk_score": 35,
+    "summary": "Climate adaptation plan for Wheat at Grain Filling & Dough Stage. Overall risk: 35/100.",
+    "recommendations": [
+      {
+        "id": "terminal_heat_wheat",
+        "category": "heat",
+        "title": "Terminal Heat Resilient Wheat (HD 3385 / PBW 826 / DBW 187)",
+        "action": "Sow heat-tolerant varieties HD 3385 or PBW 826 in late October / early November. When forecast maximum temperatures exceed 31\u00b0C during flowering/grain-fill, provide light evening irrigation or micro-sprinkler misting to cool the canopy.",
+        "management_note": "Timely or early sowing aligns the sensitive anthesis phase with cooler February temperatures, avoiding March heat shock.",
+        "evidence_base": "ICAR-IIWBR Karnal Terminal Heat Shock Benchmarks (2022-2024)",
+        "quantified_benefit": "Protects against pollen sterility and test weight shriveling during March heat spikes"
+      },
+      {
+        "id": "crop_residue_mulch",
+        "category": "moisture_conservation",
+        "title": "In-Situ Crop Residue Mulching (Happy Seeder / Surface Retained Mulch)",
+        "action": "Retain paddy straw residue on field surface using Happy Seeder / Super Seeder. Mulch blanket protects soil moisture and suppresses weed emergence.",
+        "management_note": "Avoid burning crop stubble; surface retention builds organic carbon and improves soil structure.",
+        "evidence_base": "ICAR-CSSRI & CIMMYT Conservation Agriculture Benchmarks",
+        "quantified_benefit": "Conserves soil moisture and suppresses weeds in zero-till seedbed (ICAR-CSSRI & CIMMYT)"
+      }
+    ]
+  },
+  "provenance": [
+    {
+      "source": "NASA POWER",
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "status": "archived-replay",
+      "observed_through": "2022-03-25",
+      "latency_ms": 3734,
+      "n_obs": 7754,
+      "freshness_note": "Full multi-year daily climatology with standard 5-day MERRA-2 processing lag (latest observation: 2022-03-25)"
+    },
+    {
+      "source": "MODIS NDVI & LST (GEE)",
+      "dataset_id": "MODIS/061/MOD13Q1 & MODIS/061/MOD11A1",
+      "status": "archived-replay",
+      "observed_through": "2022-03-22",
+      "latency_ms": 14539,
+      "n_obs": 2,
+      "freshness_note": "NDVI 16-day composite window: 2022-03-22 to 2022-04-06. LST daily scene: 2022-03-25."
+    }
+  ],
+  "precomputed_at": "2026-11-14T19:08:58.686367Z",
+  "is_precomputed": true
+}

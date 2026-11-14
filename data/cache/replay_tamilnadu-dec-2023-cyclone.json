@@ -1,0 +1,277 @@
+{
+  "event_id": "tamilnadu-dec-2023-cyclone",
+  "event_title": "Tamil Nadu Coastal Dec 2023 Cyclone Michaung Deluge",
+  "event_description": "Historical replay of extreme Cyclone Michaung rainfall in North Coastal Tamil Nadu. Over 300 mm (POWER) to 650 mm (IMERG) inundated coastal samba paddy fields for over a week.",
+  "lat": 13.08,
+  "lon": 80.27,
+  "replay_date": "2023-12-08",
+  "crop": "rice",
+  "sowing_date": "2023-08-15",
+  "phenology": {
+    "crop": "rice",
+    "sowing_date": "2023-08-15",
+    "is_default_sowing_date": false,
+    "days_since_sowing": 116,
+    "base_temperature_c": 10.0,
+    "accumulated_gdd": 2091.2,
+    "current_phenological_stage": "Ripening & Physiological Maturity",
+    "in_heat_sensitive_window": false,
+    "critical_heat_threshold_c": 34.0,
+    "vegetative_heat_threshold_c": 38.0,
+    "active_heat_threshold_c": 38.0,
+    "canopy_active": false,
+    "canopy_status_note": "not applicable at this stage (crop maturity / senescence)"
+  },
+  "risk_scores": {
+    "overall": 8,
+    "drought": 0,
+    "heat": 24,
+    "flood": 0,
+    "vegetation": null,
+    "vegetation_applicable": false,
+    "vegetation_status_note": "not applicable at this stage (crop maturity / senescence)",
+    "weights": {
+      "drought": 0.45,
+      "heat": 0.35,
+      "flood": 0.2,
+      "vegetation": 0.0
+    },
+    "confidence": "low",
+    "confidence_note": "All 2 live data feeds verified and consistent.",
+    "sources_disagree": false,
+    "live_sources_count": 2,
+    "score_arithmetic": {
+      "drought": {
+        "formula": "0.50 * risk(rain_pct) + 0.50 * risk(soil_pct) + dry_spell_boost",
+        "mapping_rule": ">=50th pct -> 0 risk; <=5th pct -> 100 risk; linear in between: (50 - p) / 45 * 100",
+        "primary_rain_source": "NASA GPM IMERG (V07)",
+        "primary_rain_percentile": 95.8,
+        "rain_risk_component": 0.0,
+        "primary_soil_source": "NASA POWER MERRA-2 GWETROOT",
+        "primary_soil_percentile": 77.3,
+        "soil_risk_component": 0.0,
+        "base_drought_raw": 0.0,
+        "dry_spell_days": 1,
+        "dry_spell_percentile": 45.5,
+        "dry_spell_boost": 0.0,
+        "final_drought_score": 0
+      },
+      "heat": {
+        "in_heat_sensitive_stage": false,
+        "hot_days_past_14d": 0,
+        "hot_days_forecast_7d": 0,
+        "tmax_percentile": 95.5,
+        "heat_score": 24
+      },
+      "flood": {
+        "imerg_72h_mm": 2.58,
+        "forecast_max_3d_rain_mm": 0.0,
+        "peak_3d_rain_mm": 2.58,
+        "local_historical_95th_pct_3d_mm": 45.3,
+        "flood_absolute_floor_applied": true,
+        "flood_score": 0
+      },
+      "overall": {
+        "weights_used": {
+          "drought": 0.45,
+          "heat": 0.35,
+          "flood": 0.2,
+          "vegetation": 0.0
+        },
+        "formula": "sum(weight_i * score_i)",
+        "overall_score": 8
+      }
+    },
+    "score_inputs": {
+      "drought": [
+        "NASA GPM IMERG 30d Percentile (Primary)",
+        "NASA SMAP L4 Root-Zone Percentile (Primary)",
+        "Normalized Dry Spell Percentile"
+      ],
+      "heat": [
+        "Phenology Gated Threshold",
+        "NASA POWER T2M_MAX Anomaly",
+        "Open-Meteo NWP Forecast"
+      ],
+      "flood": [
+        "NASA GPM IMERG 72h Rain",
+        "Open-Meteo 3-day NWP Rain",
+        "Local 25-yr 95th Percentile",
+        "20mm Flood Floor"
+      ],
+      "vegetation": [
+        "MODIS MOD13Q1 2001+ Baseline Anomaly",
+        "Landsat 8/9 30m Parcel NDVI",
+        "Phenology Stage Gate"
+      ]
+    }
+  },
+  "indicators": {
+    "rain_deficit_30d": {
+      "name": "30-Day Rainfall Accumulation",
+      "primary_source": "NASA GPM IMERG (V07)",
+      "primary_rain_30d_mm": 656.2,
+      "primary_rain_percentile": 95.8,
+      "imerg_30d_mm": 656.2,
+      "imerg_30d_percentile": 95.8,
+      "imerg_historical_mean_mm": 274.4,
+      "imerg_baseline_years": 24,
+      "power_cross_check_30d_mm": 556.7,
+      "power_cross_check_percentile": 90.9,
+      "power_historical_mean_mm": 269.1,
+      "sources_disagree": false,
+      "disagreement_pct": 15.2,
+      "disagreement_note": "Cross-sensor consistency between IMERG satellite and POWER reanalysis confirmed.",
+      "unit": "mm"
+    },
+    "rain_deficit_90d": {
+      "name": "90-Day Seasonal Rainfall Accumulation",
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "current_value_mm": 849.8,
+      "historical_mean_mm": 733.5,
+      "anomaly_mm": 116.2,
+      "percentile": 77.3,
+      "sample_size_years": 22,
+      "unit": "mm"
+    },
+    "soil_moisture": {
+      "name": "Root-Zone Soil Wetness",
+      "primary_source": "NASA POWER MERRA-2 GWETROOT",
+      "primary_soil_percentile": 77.3,
+      "smap_rootzone_m3m3": null,
+      "smap_surface_m3m3": null,
+      "smap_rootzone_wetness": null,
+      "smap_rootzone_wetness_percentile": null,
+      "smap_historical_mean": null,
+      "smap_baseline_years": null,
+      "power_gwetroot_fraction": 0.976,
+      "power_gwetroot_percentile": 77.3,
+      "power_gwetroot_anomaly": 0.085,
+      "sample_size_years": 22,
+      "unit": "fraction (0-1) / m^3/m^3"
+    },
+    "vegetation_vigor": {
+      "name": "Vegetation Canopy Health (NDVI)",
+      "canopy_active": false,
+      "canopy_status_note": "not applicable at this stage (crop maturity / senescence)",
+      "modis_regional_ndvi_250m": null,
+      "modis_ndvi_historical_mean": null,
+      "modis_ndvi_anomaly": null,
+      "landsat_field_ndvi_30m": null,
+      "field_vs_regional_diff": null,
+      "dataset_ids": "MODIS/061/MOD13Q1 (250m) & LANDSAT/LC08/C02/T1_L2 (30m)",
+      "unit": "NDVI index (-1 to 1)"
+    },
+    "heat_stress": {
+      "name": "Heat Stress (Rice Threshold: 38.0\u00b0C)",
+      "mean_tmax_14d_c": 28.8,
+      "historical_tmax_14d_mean_c": 27.9,
+      "tmax_14d_anomaly_c": 0.9,
+      "tmax_percentile": 95.5,
+      "active_threshold_c": 38.0,
+      "hot_days_past_14d": 0,
+      "hot_days_forecast_7d": 0,
+      "in_heat_sensitive_stage": false,
+      "phenological_stage": "Ripening & Physiological Maturity",
+      "modis_lst_day_c": null,
+      "landsat_canopy_lst_c": null,
+      "unit": "\u00b0C"
+    },
+    "flood_hazard": {
+      "name": "Extreme Precipitation & Flood Accumulation",
+      "imerg_72h_mm": 2.58,
+      "forecast_max_3d_rain_mm": 0,
+      "peak_3d_rain_mm": 2.6,
+      "local_historical_95th_pct_3d_mm": 45.3,
+      "flood_absolute_floor_mm": 20.0,
+      "historical_95th_exceeded": false,
+      "sample_size_years": 22,
+      "unit": "mm"
+    },
+    "dry_spell": {
+      "name": "Consecutive Dry Spell Duration",
+      "consecutive_days_under_1mm": 1,
+      "dry_spell_percentile": 45.5,
+      "historical_spells_evaluated": 22,
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "unit": "days"
+    },
+    "groundwater_trend": {
+      "name": "Regional Total Water Storage Trend",
+      "dataset_id": "NASA_GRACE/MASS_GRIDS_V04/MASCON_CRI",
+      "regional_trend_cm_per_year": null,
+      "depletion_trend_cm_per_year": null,
+      "current_anomaly_cm": null,
+      "spatial_resolution_caveat": "Regional (~300 km footprint, observed through 2024-09); NOT parcel-scale groundwater table",
+      "unit": "cm/year"
+    },
+    "climate_warming_trend": {
+      "name": "Decadal Surface Warming Trend",
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "warming_trend_c_per_decade": -0.014,
+      "p_value": 0.867,
+      "r_squared": 0.001,
+      "baseline_span": "2001-2022",
+      "years_evaluated": 22,
+      "caveat": "MERRA-2 grid-point trend; treat with caution",
+      "unit": "\u00b0C/decade"
+    }
+  },
+  "yield_impact": {
+    "yield_applicable": false,
+    "note": "Yield impact estimation not applicable at current crop stage (Ripening & Physiological Maturity).",
+    "estimation_type": "Literature-Based Scenario Estimate",
+    "documented_range_pct": "15-45% (IRRI/ICAR flood+drought trials)",
+    "baseline_yield_t_ha": 3.8,
+    "predicted_yield_conventional_t_ha": 3.8,
+    "predicted_yield_with_strv_t_ha": 3.8,
+    "yield_loss_unmitigated_pct": 0.0,
+    "yield_protected_by_adaptation_t_ha": 0.0,
+    "loss_drivers": {
+      "terminal_heat_pct": 0.0,
+      "drought_moisture_pct": 0.0,
+      "flood_excess_pct": 0.0
+    },
+    "recommended_interventions": []
+  },
+  "advisory": {
+    "language": "en",
+    "crop": "rice",
+    "phenological_stage": "Ripening & Physiological Maturity",
+    "overall_risk_score": 8,
+    "summary": "Climate adaptation plan for Rice at Ripening & Physiological Maturity. Overall risk: 8/100.",
+    "recommendations": [
+      {
+        "id": "harvest_maturity",
+        "category": "harvest",
+        "title": "Maturity Stage & Harvest Readiness Management",
+        "action": "Crop is at physiological maturity/ripening. Drain standing water from fields 10-14 days prior to harvest to facilitate mechanical harvesting and uniform grain drying. Harvest when 80-85% grains turn straw-golden.",
+        "management_note": "For next season: procure certified seeds of stress-tolerant varieties (STRVs) suited to local flood or drought risks.",
+        "evidence_base": "ICAR-CRRI & SAU Post-Harvest Loss Mitigation Guidelines",
+        "quantified_benefit": "Prevents 5-15% field shattering and fungal spoilage losses through timely drain and harvest"
+      }
+    ]
+  },
+  "provenance": [
+    {
+      "source": "NASA POWER",
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "status": "archived-replay",
+      "observed_through": "2023-12-08",
+      "latency_ms": 3585,
+      "n_obs": 8377,
+      "freshness_note": "Full multi-year daily climatology with standard 5-day MERRA-2 processing lag (latest observation: 2023-12-08)"
+    },
+    {
+      "source": "NASA GPM IMERG (GEE)",
+      "dataset_id": "NASA/GPM_L3/IMERG_V07",
+      "status": "archived-replay",
+      "observed_through": "2023-12-08 23:30",
+      "latency_ms": 6363,
+      "n_obs": 1440,
+      "freshness_note": "30-minute calibrated multi-satellite precipitation rate (observed through 2023-12-08 23:30 UTC, window: 2023-11-09 to 2023-12-08)"
+    }
+  ],
+  "precomputed_at": "2026-11-14T19:09:25.059849Z",
+  "is_precomputed": true
+}

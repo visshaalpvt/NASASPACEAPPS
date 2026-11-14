@@ -1,0 +1,277 @@
+{
+  "event_id": "pakistan-sindh-aug-2022-flood",
+  "event_title": "Pakistan Sindh August 2022 Monsoon Deluge",
+  "event_description": "Historical replay of the catastrophic August 2022 Indus Basin flood deluge in Sindh. Over 550 mm of relentless monsoon precipitation destroyed standing kharif crops.",
+  "lat": 26.0,
+  "lon": 68.5,
+  "replay_date": "2022-08-31",
+  "crop": "rice",
+  "sowing_date": "2022-06-01",
+  "phenology": {
+    "crop": "rice",
+    "sowing_date": "2022-06-01",
+    "is_default_sowing_date": false,
+    "days_since_sowing": 92,
+    "base_temperature_c": 10.0,
+    "accumulated_gdd": 2067.3,
+    "current_phenological_stage": "Ripening & Physiological Maturity",
+    "in_heat_sensitive_window": false,
+    "critical_heat_threshold_c": 34.0,
+    "vegetative_heat_threshold_c": 38.0,
+    "active_heat_threshold_c": 38.0,
+    "canopy_active": false,
+    "canopy_status_note": "not applicable at this stage (crop maturity / senescence)"
+  },
+  "risk_scores": {
+    "overall": 4,
+    "drought": 0,
+    "heat": 12,
+    "flood": 0,
+    "vegetation": null,
+    "vegetation_applicable": false,
+    "vegetation_status_note": "not applicable at this stage (crop maturity / senescence)",
+    "weights": {
+      "drought": 0.45,
+      "heat": 0.35,
+      "flood": 0.2,
+      "vegetation": 0.0
+    },
+    "confidence": "low",
+    "confidence_note": "All 2 live data feeds verified and consistent.",
+    "sources_disagree": false,
+    "live_sources_count": 2,
+    "score_arithmetic": {
+      "drought": {
+        "formula": "0.50 * risk(rain_pct) + 0.50 * risk(soil_pct) + dry_spell_boost",
+        "mapping_rule": ">=50th pct -> 0 risk; <=5th pct -> 100 risk; linear in between: (50 - p) / 45 * 100",
+        "primary_rain_source": "NASA GPM IMERG (V07)",
+        "primary_rain_percentile": 100.0,
+        "rain_risk_component": 0.0,
+        "primary_soil_source": "NASA POWER MERRA-2 GWETROOT",
+        "primary_soil_percentile": 100.0,
+        "soil_risk_component": 0.0,
+        "base_drought_raw": 0.0,
+        "dry_spell_days": 5,
+        "dry_spell_percentile": 38.1,
+        "dry_spell_boost": 0.0,
+        "final_drought_score": 0
+      },
+      "heat": {
+        "in_heat_sensitive_stage": false,
+        "hot_days_past_14d": 0,
+        "hot_days_forecast_7d": 0,
+        "tmax_percentile": 50.0,
+        "heat_score": 12
+      },
+      "flood": {
+        "imerg_72h_mm": 2.14,
+        "forecast_max_3d_rain_mm": 0.0,
+        "peak_3d_rain_mm": 2.14,
+        "local_historical_95th_pct_3d_mm": 44.6,
+        "flood_absolute_floor_applied": true,
+        "flood_score": 0
+      },
+      "overall": {
+        "weights_used": {
+          "drought": 0.45,
+          "heat": 0.35,
+          "flood": 0.2,
+          "vegetation": 0.0
+        },
+        "formula": "sum(weight_i * score_i)",
+        "overall_score": 4
+      }
+    },
+    "score_inputs": {
+      "drought": [
+        "NASA GPM IMERG 30d Percentile (Primary)",
+        "NASA SMAP L4 Root-Zone Percentile (Primary)",
+        "Normalized Dry Spell Percentile"
+      ],
+      "heat": [
+        "Phenology Gated Threshold",
+        "NASA POWER T2M_MAX Anomaly",
+        "Open-Meteo NWP Forecast"
+      ],
+      "flood": [
+        "NASA GPM IMERG 72h Rain",
+        "Open-Meteo 3-day NWP Rain",
+        "Local 25-yr 95th Percentile",
+        "20mm Flood Floor"
+      ],
+      "vegetation": [
+        "MODIS MOD13Q1 2001+ Baseline Anomaly",
+        "Landsat 8/9 30m Parcel NDVI",
+        "Phenology Stage Gate"
+      ]
+    }
+  },
+  "indicators": {
+    "rain_deficit_30d": {
+      "name": "30-Day Rainfall Accumulation",
+      "primary_source": "NASA GPM IMERG (V07)",
+      "primary_rain_30d_mm": 563.5,
+      "primary_rain_percentile": 100.0,
+      "imerg_30d_mm": 563.5,
+      "imerg_30d_percentile": 100.0,
+      "imerg_historical_mean_mm": 90.6,
+      "imerg_baseline_years": 24,
+      "power_cross_check_30d_mm": 550.2,
+      "power_cross_check_percentile": 100.0,
+      "power_historical_mean_mm": 50.8,
+      "sources_disagree": false,
+      "disagreement_pct": 2.4,
+      "disagreement_note": "Cross-sensor consistency between IMERG satellite and POWER reanalysis confirmed.",
+      "unit": "mm"
+    },
+    "rain_deficit_90d": {
+      "name": "90-Day Seasonal Rainfall Accumulation",
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "current_value_mm": 820.8,
+      "historical_mean_mm": 101.3,
+      "anomaly_mm": 719.6,
+      "percentile": 100.0,
+      "sample_size_years": 21,
+      "unit": "mm"
+    },
+    "soil_moisture": {
+      "name": "Root-Zone Soil Wetness",
+      "primary_source": "NASA POWER MERRA-2 GWETROOT",
+      "primary_soil_percentile": 100.0,
+      "smap_rootzone_m3m3": null,
+      "smap_surface_m3m3": null,
+      "smap_rootzone_wetness": null,
+      "smap_rootzone_wetness_percentile": null,
+      "smap_historical_mean": null,
+      "smap_baseline_years": null,
+      "power_gwetroot_fraction": 0.94,
+      "power_gwetroot_percentile": 100.0,
+      "power_gwetroot_anomaly": 0.581,
+      "sample_size_years": 21,
+      "unit": "fraction (0-1) / m^3/m^3"
+    },
+    "vegetation_vigor": {
+      "name": "Vegetation Canopy Health (NDVI)",
+      "canopy_active": false,
+      "canopy_status_note": "not applicable at this stage (crop maturity / senescence)",
+      "modis_regional_ndvi_250m": null,
+      "modis_ndvi_historical_mean": null,
+      "modis_ndvi_anomaly": null,
+      "landsat_field_ndvi_30m": null,
+      "field_vs_regional_diff": null,
+      "dataset_ids": "MODIS/061/MOD13Q1 (250m) & LANDSAT/LC08/C02/T1_L2 (30m)",
+      "unit": "NDVI index (-1 to 1)"
+    },
+    "heat_stress": {
+      "name": "Heat Stress (Rice Threshold: 38.0\u00b0C)",
+      "mean_tmax_14d_c": 31.2,
+      "historical_tmax_14d_mean_c": 40.2,
+      "tmax_14d_anomaly_c": -9.0,
+      "tmax_percentile": 0.0,
+      "active_threshold_c": 38.0,
+      "hot_days_past_14d": 0,
+      "hot_days_forecast_7d": 0,
+      "in_heat_sensitive_stage": false,
+      "phenological_stage": "Ripening & Physiological Maturity",
+      "modis_lst_day_c": null,
+      "landsat_canopy_lst_c": null,
+      "unit": "\u00b0C"
+    },
+    "flood_hazard": {
+      "name": "Extreme Precipitation & Flood Accumulation",
+      "imerg_72h_mm": 2.14,
+      "forecast_max_3d_rain_mm": 0,
+      "peak_3d_rain_mm": 2.1,
+      "local_historical_95th_pct_3d_mm": 44.6,
+      "flood_absolute_floor_mm": 20.0,
+      "historical_95th_exceeded": false,
+      "sample_size_years": 21,
+      "unit": "mm"
+    },
+    "dry_spell": {
+      "name": "Consecutive Dry Spell Duration",
+      "consecutive_days_under_1mm": 5,
+      "dry_spell_percentile": 38.1,
+      "historical_spells_evaluated": 21,
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "unit": "days"
+    },
+    "groundwater_trend": {
+      "name": "Regional Total Water Storage Trend",
+      "dataset_id": "NASA_GRACE/MASS_GRIDS_V04/MASCON_CRI",
+      "regional_trend_cm_per_year": null,
+      "depletion_trend_cm_per_year": null,
+      "current_anomaly_cm": null,
+      "spatial_resolution_caveat": "Regional (~300 km footprint, observed through 2024-09); NOT parcel-scale groundwater table",
+      "unit": "cm/year"
+    },
+    "climate_warming_trend": {
+      "name": "Decadal Surface Warming Trend",
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "warming_trend_c_per_decade": -0.036,
+      "p_value": 0.8377,
+      "r_squared": 0.002,
+      "baseline_span": "2001-2021",
+      "years_evaluated": 21,
+      "caveat": "MERRA-2 grid-point trend; treat with caution",
+      "unit": "\u00b0C/decade"
+    }
+  },
+  "yield_impact": {
+    "yield_applicable": false,
+    "note": "Yield impact estimation not applicable at current crop stage (Ripening & Physiological Maturity).",
+    "estimation_type": "Literature-Based Scenario Estimate",
+    "documented_range_pct": "15-45% (IRRI/ICAR flood+drought trials)",
+    "baseline_yield_t_ha": 3.8,
+    "predicted_yield_conventional_t_ha": 3.8,
+    "predicted_yield_with_strv_t_ha": 3.8,
+    "yield_loss_unmitigated_pct": 0.0,
+    "yield_protected_by_adaptation_t_ha": 0.0,
+    "loss_drivers": {
+      "terminal_heat_pct": 0.0,
+      "drought_moisture_pct": 0.0,
+      "flood_excess_pct": 0.0
+    },
+    "recommended_interventions": []
+  },
+  "advisory": {
+    "language": "en",
+    "crop": "rice",
+    "phenological_stage": "Ripening & Physiological Maturity",
+    "overall_risk_score": 4,
+    "summary": "Climate adaptation plan for Rice at Ripening & Physiological Maturity. Overall risk: 4/100.",
+    "recommendations": [
+      {
+        "id": "harvest_maturity",
+        "category": "harvest",
+        "title": "Maturity Stage & Harvest Readiness Management",
+        "action": "Crop is at physiological maturity/ripening. Drain standing water from fields 10-14 days prior to harvest to facilitate mechanical harvesting and uniform grain drying. Harvest when 80-85% grains turn straw-golden.",
+        "management_note": "For next season: procure certified seeds of stress-tolerant varieties (STRVs) suited to local flood or drought risks.",
+        "evidence_base": "ICAR-CRRI & SAU Post-Harvest Loss Mitigation Guidelines",
+        "quantified_benefit": "Prevents 5-15% field shattering and fungal spoilage losses through timely drain and harvest"
+      }
+    ]
+  },
+  "provenance": [
+    {
+      "source": "NASA POWER",
+      "dataset_id": "NASA_POWER_AG_POINT_DAILY_V2",
+      "status": "archived-replay",
+      "observed_through": "2022-08-31",
+      "latency_ms": 3626,
+      "n_obs": 7913,
+      "freshness_note": "Full multi-year daily climatology with standard 5-day MERRA-2 processing lag (latest observation: 2022-08-31)"
+    },
+    {
+      "source": "NASA GPM IMERG (GEE)",
+      "dataset_id": "NASA/GPM_L3/IMERG_V07",
+      "status": "archived-replay",
+      "observed_through": "2022-08-31 23:30",
+      "latency_ms": 3843,
+      "n_obs": 1440,
+      "freshness_note": "30-minute calibrated multi-satellite precipitation rate (observed through 2022-08-31 23:30 UTC, window: 2022-08-02 to 2022-08-31)"
+    }
+  ],
+  "precomputed_at": "2026-11-14T19:09:17.292458Z",
+  "is_precomputed": true
+}
