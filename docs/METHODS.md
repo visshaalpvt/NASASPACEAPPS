@@ -41,7 +41,7 @@ $$\text{Risk}(P) = \begin{cases} 0.0 & P \ge 50.0 \\ 100.0 & P \le 5.0 \\ \frac{
 
 - **Primary Rainfall:** GPM IMERG satellite percentile $P_{\text{rain}}$ (cross-checked with POWER MERRA-2).
 - **Primary Soil Moisture:** SMAP L4 satellite root-zone percentile $P_{\text{soil}}$ (cross-checked with POWER GWETROOT).
-- **Physical Soil Moisture Sanity Check:** If absolute root-zone wetness fraction is $\ge 0.50$ (soils saturated/moist), soil drought risk is zeroed out. Between $0.35$ and $0.50$, soil risk is damped linearly: $\text{Risk}_{\text{soil}} \times \frac{0.50 - \theta_{\text{root}}}{0.15}$.
+- **Physical Soil Moisture Sanity Check (Heuristic Rule):** If absolute root-zone wetness fraction is $\theta_{\text{root}} \ge 0.50$ (soils near field capacity / saturation), soil drought risk is zeroed out regardless of multi-year percentile rank. Between $0.35$ and $0.50$, soil risk is damped linearly: $\text{Risk}_{\text{soil}} \times \frac{0.50 - \theta_{\text{root}}}{0.15}$. This physical heuristic prevents false drought alarms in humid deltas (e.g. Cauvery, Bengal Delta) where a season may rank in the lower quartile of multi-year records simply because prior years were hyper-saturated, despite current root-zone moisture being entirely adequate for crop water demand.
 - **Dry-Spell Normalization:** Consecutive dry days are normalized against the historical distribution of dry spells for that exact calendar day. A normal winter dry spell (e.g. November in Punjab) does not add drought risk when soil and rainfall are at/above median.
 $$\text{Base Drought} = 0.50 \times \text{Risk}(P_{\text{rain}}) + 0.50 \times \text{Risk}(P_{\text{soil}})$$
 $$\text{Drought Score} = \min(100, \text{Base Drought} + \delta_{\text{dry}})$$
@@ -81,10 +81,13 @@ Compares 72-hour precipitation (NASA GPM IMERG and numerical forecast) against t
 
 ## 4. Literature-Derived Yield Impact & STRV Buffers
 - **Estimation Paradigm:** Literature-based scenario estimate (ICAR-NICRA, IPCC AR6, IRRI trials), **not machine learning on proprietary farm datasets**.
-- **Stage Gating:** When a crop reaches **Ripening / Physiological Maturity / Harvest**, yield impact estimation is gated out (`yield_applicable: False`, unmitigated loss $0.0\%$), because the crop cycle is complete.
-- **Wheat Terminal Heat Cap:** Heat loss during reproductive grain-filling is capped at $25.0\%$ (matching the documented $10\text{--}35\%$ range from the March 2022 heatwave benchmark).
+- **Assumed Regional Baseline Yields:** Assumed baseline yields (Rice: 3.8 t/ha, Wheat: 3.4 t/ha, Maize: 4.2 t/ha) are regional district averages sourced from the Directorate of Economics and Statistics (DES), Ministry of Agriculture & Farmers Welfare, Government of India (2018–2022 multi-year district crop harvest reports).
+- **Phenology Stage Gating:** 
+  - *Maturity/Harvesting:* When a crop reaches **Ripening / Physiological Maturity / Harvest**, yield impact estimation is gated out (`yield_applicable: False`, unmitigated loss $0.0\%$), because the crop cycle is complete.
+  - *Emergence/Newly Sown:* When a crop is newly sown ($<14\text{ days}$ or $\text{GDD} < 150$), yield loss is gated out (`yield_applicable: False`, unmitigated loss $0.0\%$), because no harvestable biomass is at risk during germination/emergence.
+- **Wheat Terminal Heat Cap:** Heat loss during reproductive grain-filling is capped at $25.0\%$ (matching the documented $10\text{--}35\%$ range from the March 2022 heatwave benchmark, labeled as model upper cap).
 - **STRV Resilience Buffers:**
-  - *Swarna-Sub1:* Protects $+1.8\text{ t/ha}$ against up to 14 days of flash flood submergence.
+  - *Swarna-Sub1:* Protects $+1.0\text{ to }3.0\text{ t/ha}$ against up to 14 days of flash flood submergence (IRRI trials).
   - *Sahbhagi Dhan:* Protects $+0.8\text{ to }1.0\text{ t/ha}$ under drought stress.
   - *Safe Alternate Wetting and Drying (Safe AWD):* Conserves $15\text{--}20\%$ irrigation water.
 

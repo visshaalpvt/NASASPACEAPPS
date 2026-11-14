@@ -13,18 +13,20 @@ from typing import Optional, Dict, Any
 CROP_BASELINES = {
     "rice": {
         "normal_yield_t_ha": 3.8,
+        "baseline_source": "Assumed regional baseline (Source: DES India Kharif rice district averages 2018-2022)",
         "heat_threshold_c": 34.0,
         "heat_loss_pct_per_deg": 10.0,
         "heat_loss_cap_pct": 40.0,
         "drought_resilient_variety": "Sahbhagi Dhan / BRRI Dhan 56",
         "drought_buffer_t_ha": 0.9,      # +0.8 to 1.0 t/ha advantage under drought
         "submergence_resilient_variety": "Swarna-Sub1",
-        "submergence_buffer_t_ha": 1.8,  # +1.0 to 3.0 t/ha advantage under flash floods
+        "submergence_buffer_t_ha": 2.0,  # +1.0 to 3.0 t/ha advantage under flash floods (IRRI brief)
         "saline_resilient_variety": "BRRI Dhan 47 / CSR 36",
         "documented_range_pct": "15-45% (IRRI/ICAR flood+drought trials)",
     },
     "wheat": {
         "normal_yield_t_ha": 3.4,
+        "baseline_source": "Assumed regional baseline (Source: DES India Rabi wheat district averages 2018-2022)",
         "heat_threshold_c": 31.0,
         "heat_loss_pct_per_deg": 5.0,    # Pre-anthesis pollen sterility & grain shriveling (2022 heatwave benchmark)
         "heat_loss_cap_pct": 25.0,       # Documented Punjab 2022 state avg ~10-15%, hot-spots up to 25-35%
@@ -37,6 +39,7 @@ CROP_BASELINES = {
     },
     "maize": {
         "normal_yield_t_ha": 4.2,
+        "baseline_source": "Assumed regional baseline (Source: DES India maize district averages 2018-2022)",
         "heat_threshold_c": 35.0,
         "heat_loss_pct_per_deg": 7.0,
         "heat_loss_cap_pct": 35.0,
@@ -57,18 +60,44 @@ def estimate_yield_impact(crop: str, metrics: dict, risk: dict, phenology: Optio
     """
     crop_info = CROP_BASELINES.get(crop.lower(), CROP_BASELINES["rice"])
     base_yield = crop_info["normal_yield_t_ha"]
+    base_source = crop_info["baseline_source"]
     
-    # Gate: if crop is at maturity/ripening/harvest, yield impact is not applicable
+    # Gate 1: If crop is at maturity/ripening/harvest, yield impact is not applicable (crop cycle complete)
     if phenology:
         stage = phenology.get("current_phenological_stage", "")
         stage_lower = stage.lower()
+        days = phenology.get("days_since_sowing", 999)
+        gdd = phenology.get("accumulated_gdd", 999.0)
+
         if any(kw in stage_lower for kw in ["ripening", "maturity", "mature", "harvesting", "harvest"]):
             return {
                 "yield_applicable": False,
-                "note": f"Yield impact estimation not applicable at current crop stage ({stage}).",
+                "note": f"Yield impact estimation not applicable at current crop stage ({stage}) - harvest readiness underway.",
                 "estimation_type": "Literature-Based Scenario Estimate",
                 "documented_range_pct": crop_info["documented_range_pct"],
                 "baseline_yield_t_ha": base_yield,
+                "baseline_yield_label": f"Assumed regional baseline: {base_yield} t/ha ({base_source})",
+                "predicted_yield_conventional_t_ha": base_yield,
+                "predicted_yield_with_strv_t_ha": base_yield,
+                "yield_loss_unmitigated_pct": 0.0,
+                "yield_protected_by_adaptation_t_ha": 0.0,
+                "loss_drivers": {
+                    "terminal_heat_pct": 0.0,
+                    "drought_moisture_pct": 0.0,
+                    "flood_excess_pct": 0.0
+                },
+                "recommended_interventions": []
+            }
+
+        # Gate 2: If crop is newly sown / early vegetative, no reproductive or harvestable biomass is at risk yet
+        if days < 14 or gdd < 150.0 or any(kw in stage_lower for kw in ["germination", "emergence", "crown root"]):
+            return {
+                "yield_applicable": False,
+                "note": f"Yield impact estimation not applicable at current crop stage ({stage}, Day {days}) - crop newly sown; vegetative establishment underway.",
+                "estimation_type": "Literature-Based Scenario Estimate",
+                "documented_range_pct": crop_info["documented_range_pct"],
+                "baseline_yield_t_ha": base_yield,
+                "baseline_yield_label": f"Assumed regional baseline: {base_yield} t/ha ({base_source})",
                 "predicted_yield_conventional_t_ha": base_yield,
                 "predicted_yield_with_strv_t_ha": base_yield,
                 "yield_loss_unmitigated_pct": 0.0,
@@ -83,6 +112,7 @@ def estimate_yield_impact(crop: str, metrics: dict, risk: dict, phenology: Optio
     
     # 1. Heat Shock Penalty (Gated strictly by reproductive/flowering phenological window)
     in_sensitive = metrics.get("in_heat_sensitive_window", False)
+    is_heat_capped = False
     if in_sensitive:
         tmax_14d = metrics.get("tmax_14d_c", 30.0)
         thr = crop_info["heat_threshold_c"]
@@ -90,8 +120,10 @@ def estimate_yield_impact(crop: str, metrics: dict, risk: dict, phenology: Optio
         hot_days = metrics.get("hot_days_14d", 0) + metrics.get("hot_days_forecast", 0)
         raw_heat_loss = heat_excess * crop_info["heat_loss_pct_per_deg"] * (1.0 + 0.1 * min(hot_days, 10))
         heat_loss_pct = min(crop_info["heat_loss_cap_pct"], raw_heat_loss)
+        if raw_heat_loss >= crop_info["heat_loss_cap_pct"]:
+            is_heat_capped = True
     else:
-        heat_loss_pct = 0.0  # At sowing or vegetative stage, reproductive heat penalty does not apply
+        heat_loss_pct = 0.0  # At vegetative stage, reproductive heat penalty does not apply
     
     # 2. Drought / Moisture Stress Penalty
     drought_score = risk.get("drought", 20)
@@ -133,7 +165,7 @@ def estimate_yield_impact(crop: str, metrics: dict, risk: dict, phenology: Optio
         recommended_interventions.append({
             "type": "Flash Flood Adaptation",
             "variety": crop_info["submergence_resilient_variety"],
-            "protection": f"+{crop_info['submergence_buffer_t_ha']} t/ha protected through SUB1 submergence tolerance (up to 14 days)",
+            "protection": "+1.0 to 3.0 t/ha protected through SUB1 submergence tolerance (up to 14 days, IRRI trials)",
             "agronomy": "Pre-clear drainage channels, postpone fertilizer top-dressing until waters recede"
         })
         
@@ -148,15 +180,21 @@ def estimate_yield_impact(crop: str, metrics: dict, risk: dict, phenology: Optio
     buffered_yield = min(base_yield, round(buffered_yield, 2))
     yield_saved_t_ha = round(max(0.0, buffered_yield - expected_yield_conventional), 2)
     
+    loss_note = None
+    if is_heat_capped:
+        loss_note = f"documented 10–35% (CIMMYT/ICAR); model at upper cap ({crop_info['heat_loss_cap_pct']}%)"
+
     return {
         "yield_applicable": True,
         "estimation_type": "Literature-Based Scenario Estimate",
         "documented_range_pct": crop_info["documented_range_pct"],
         "baseline_yield_t_ha": base_yield,
+        "baseline_yield_label": f"Assumed regional baseline: {base_yield} t/ha ({base_source})",
         "predicted_yield_conventional_t_ha": expected_yield_conventional,
         "predicted_yield_with_strv_t_ha": buffered_yield,
         "yield_loss_unmitigated_pct": total_loss_pct,
         "yield_protected_by_adaptation_t_ha": yield_saved_t_ha,
+        "loss_note": loss_note,
         "loss_drivers": {
             "terminal_heat_pct": round(heat_loss_pct, 1),
             "drought_moisture_pct": round(drought_loss_pct, 1),

@@ -243,13 +243,13 @@
       <div class="row">
         <label style="font-size: 11px;">Crop:
           <select id="crop">
+            <option value="wheat" selected>Wheat</option>
             <option value="rice">Rice (Paddy)</option>
-            <option value="wheat">Wheat</option>
             <option value="maize">Maize</option>
           </select>
         </label>
         <label style="font-size: 11px;">Sowing:
-          <input type="date" id="sowing_date" value="2026-07-01">
+          <input type="date" id="sowing_date" value="2026-11-10">
         </label>
         <label style="font-size: 11px;">Language:
           <select id="lang">
@@ -277,8 +277,8 @@
   </div>
 
   <script>
-    // Initialize Leaflet Map centered on South Asia
-    const map = L.map('map').setView([20.59, 78.96], 5);
+    // Initialize Leaflet Map centered on Ludhiana, Punjab
+    const map = L.map('map').setView([30.90, 75.85], 7);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       maxZoom: 18
@@ -294,7 +294,7 @@
     const gibsUrl = (layer, time, maxZoom, ext = 'png') =>
       L.tileLayer(`https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/${layer}/default/${time}/GoogleMapsCompatible_Level${maxZoom}/{z}/{y}/{x}.${ext}`, {
         maxNativeZoom: maxZoom,
-        maxZoom: 12,
+        maxZoom: maxZoom,
         opacity: 0.75,
         attribution: 'NASA GIBS'
       });
@@ -309,7 +309,7 @@
     L.control.layers(null, overlayLayers, { collapsed: false }).addTo(map);
     overlayLayers['MODIS TrueColor (Daily)'].addTo(map);
 
-    let pin, trendChart, pt = { lat: 10.78, lon: 79.14 };
+    let pin, trendChart, pt = { lat: 30.90, lon: 75.85 };
 
     function jumpTo(lat, lon, cropVal, sowingVal) {
       pt = { lat: lat, lon: lon };
@@ -412,9 +412,10 @@
       let provHtml = prov.map(p => {
         const isOk = p.status === 'live' || p.status === 'cached';
         const stClass = isOk ? 'status-ok' : (p.status.includes('SKIP') ? 'status-skip' : 'status-err');
+        const srcLabel = p.source.includes('SMAP') ? `${p.source} <span style="font-size:8px; color:#94a3b8;">(short record 2015+)</span>` : p.source;
         return `
           <tr>
-            <td><b>${p.source}</b></td>
+            <td><b>${srcLabel}</b></td>
             <td><code>${p.dataset_id}</code></td>
             <td class="${stClass}">${p.status}</td>
             <td>${p.observed_through || 'N/A'}</td>
@@ -425,6 +426,7 @@
 
       let vegDisplay = k.vegetation !== null ? k.vegetation : 'N/A';
       let vegNote = k.vegetation_applicable ? 'Canopy Anomaly' : 'Stage Gated';
+      const heatStageLabel = ph.in_heat_sensitive_window ? 'Terminal (Active)' : (ph.current_phenological_stage.includes('Ripening') ? 'Ripening (Gated)' : (ph.current_phenological_stage.includes('Mature') ? 'Mature (Gated)' : 'Vegetative (Gated)'));
 
       let html = `
         ${disagreementHtml}
@@ -443,7 +445,7 @@
           <div class="gauges">
             ${g('Overall', k.overall, 'Weighted')}
             ${g('Drought', k.drought, 'Soil & Rain')}
-            ${g('Heat', k.heat, ph.in_heat_sensitive_window ? 'Terminal' : 'Vegetative')}
+            ${g('Heat', k.heat, heatStageLabel)}
             ${g('Flood', k.flood, '>20mm Floor')}
             ${g('Veg Stress', vegDisplay, vegNote)}
           </div>
@@ -470,7 +472,7 @@
               </div>
             </div>
             <small style="color:var(--text-muted); display:block; margin-top:3px; font-size:10px;">
-              Baseline: ${yp.baseline_yield_t_ha} t/ha. Loss drivers: Heat: ${yp.loss_drivers.terminal_heat_pct}%, Drought: ${yp.loss_drivers.drought_moisture_pct}%, Flood: ${yp.loss_drivers.flood_excess_pct}%. Benchmarks: ICAR-NICRA, IPCC AR6 & IRRI field trials.
+              Baseline: ${yp.baseline_yield_t_ha} t/ha (assumed regional baseline, DES India 2018-2022). Loss drivers: Heat: ${yp.loss_drivers.terminal_heat_pct}%, Drought: ${yp.loss_drivers.drought_moisture_pct}%, Flood: ${yp.loss_drivers.flood_excess_pct}%. Benchmarks: ICAR-NICRA, IPCC AR6 & IRRI field trials.
             </small>
           `}
         </div>
@@ -556,6 +558,7 @@
               <small style="display:block; color:var(--text-muted); font-size:10px;">Buffer: +${yp.yield_protected_by_adaptation_t_ha} t/ha</small>
             </div>
           </div>
+          ${yp.loss_note ? `<div style="font-size:10px; color:#93c5fd; margin-top:5px; padding:4px 6px; background:#0c2338; border-radius:4px; border-left:2px solid #38bdf8;">⚠️ ${yp.loss_note}</div>` : ''}
         </div>
 
         <div class="card">

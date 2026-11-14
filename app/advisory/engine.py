@@ -94,7 +94,7 @@ SOLUTIONS_DB = {
         "id": "submergence_rice",
         "category": "flood",
         "evidence_source": "IRRI Sub1 Gene Field Documentation (ICAR-CRRI)",
-        "benefit": "Withstands 14 days of complete underwater submergence with 1.5 - 2.5 t/ha yield recovery",
+        "benefit": "Withstands 14 days of complete underwater submergence with +1.0 to 3.0 t/ha yield recovery (IRRI SUB1 trials)",
         "translations": {
             "en": {
                 "title": "Submergence-Tolerant Rice (Swarna-Sub1 / Sambha Mahsuri-Sub1)",
