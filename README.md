@@ -2,7 +2,7 @@
 
 > **NASA International Space Apps Challenge 2026**  
 > **Challenge:** *Field Shift: Adapting Farms with NASA Data*  
-> **Repository:** [GitHub](https://github.com/kisanradar/kisanradar)  
+> **Repository:** [GitHub](https://github.com/visshaalpvt/NASASPACEAPPS)  
 > **License:** MIT License  
 
 ![KisanRadar Dashboard](docs/screenshots/kisanradar_dashboard.png)

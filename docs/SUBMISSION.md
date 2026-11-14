@@ -20,7 +20,7 @@ KisanRadar transforms multi-mission NASA Earth observations (GPM IMERG, SMAP, PO
 - **30-Second Video Demo:** `https://youtu.be/example-kisanradar-30s` *(30-second screen capture with English subtitles)*
 
 ### Link to Final Project
-- **Public GitHub Repository:** `https://github.com/kisanradar/kisanradar` *(Contains complete verified codebase, tests, Dockerfile, documentation, and precomputed real telemetry)*
+- **Public GitHub Repository:** `https://github.com/visshaalpvt/NASASPACEAPPS` *(Contains complete verified codebase, tests, Dockerfile, documentation, and precomputed real telemetry)*
 - **Live Interactive Demo:** `https://kisanradar.org` *(or Hugging Face Spaces Docker)*
 
 ---
