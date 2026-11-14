@@ -165,7 +165,7 @@ def estimate_yield_impact(crop: str, metrics: dict, risk: dict, phenology: Optio
         recommended_interventions.append({
             "type": "Flash Flood Adaptation",
             "variety": crop_info["submergence_resilient_variety"],
-            "protection": "+1.0 to 3.0 t/ha protected through SUB1 submergence tolerance (up to 14 days, IRRI trials)",
+            "protection": "+1.0 to 3.0 t/ha protected through SUB1 submergence tolerance (IRRI trials; not effective under stagnant flooding deeper than 20 cm for over 20 days)",
             "agronomy": "Pre-clear drainage channels, postpone fertilizer top-dressing until waters recede"
         })
         

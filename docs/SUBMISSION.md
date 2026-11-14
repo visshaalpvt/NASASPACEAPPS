@@ -1,8 +1,8 @@
 # 🚀 KisanRadar: NASA Space Apps Challenge 2026 Submission Document
 
 > **Challenge:** *Field Shift: Adapting Farms with NASA Data*  
-> **Challenge Track:** Climate Resilience & Agricultural Adaptation  
-> **Team:** KisanRadar  
+> **Team:** TODO: Team Name  
+> **Members:** TODO: List member names  
 > **Submission Deadline:** Sunday 15 November 2026, 11:59 PM Local Event Time  
 
 ---
@@ -16,22 +16,21 @@
 KisanRadar transforms multi-mission NASA Earth observations (GPM IMERG, SMAP, POWER, MODIS, Landsat 8/9, GRACE-FO) into hyper-local, stage-gated climate risk assessments and empirical adaptation advisories for smallholder farmers across South Asia. By evaluating live telemetry against localized 2001–present empirical baselines and crop Growing Degree Days (GDD), KisanRadar diagnoses drought, terminal heat, flood, and vegetation stress with complete data provenance and zero synthetic data. Actionable advisories (Safe AWD, Swarna-Sub1, Sahbhagi Dhan, Happy Seeder mulching) are delivered in 6 regional languages alongside interactive historical shock replays.
 
 ### Link to Demo
-- **Slide Deck (7 Slides):** `docs/slides/kisanradar_deck.pdf` / `docs/slides/SLIDES.md`
-- **30-Second Video Demo:** `https://youtu.be/example-kisanradar-30s` *(30-second screen capture with English subtitles)*
+- **Slide Deck (7 Slides):** `TODO: Insert slide deck PDF link` / `docs/slides/SLIDES.md`
+- **30-Second Video Demo:** `TODO: Insert YouTube link` *(30-second screen capture with English subtitles)*
 
 ### Link to Final Project
 - **Public GitHub Repository:** `https://github.com/visshaalpvt/NASASPACEAPPS` *(Contains complete verified codebase, tests, Dockerfile, documentation, and precomputed real telemetry)*
-- **Live Interactive Demo:** `https://kisanradar.org` *(or Hugging Face Spaces Docker)*
+- **Live Interactive Demo:** `TODO: Insert live demo URL` *(or Hugging Face Spaces Docker)*
 
 ---
 
 ### Detailed Description
 
 #### The Problem: The Last-Mile NASA Data Gap for Smallholders
-Over 400 million smallholder farmers across South Asia manage holdings under 2 hectares while bearing the brunt of accelerating climate extremes:
-- **Terminal heatwaves in Punjab:** March 2022 saw daytime temperatures surge above 36–38°C during wheat grain filling, triggering extensive pollen sterility and 10–35% yield losses.
-- **Flash floods in the Indus Basin and Bengal Delta:** August 2022 monsoon deluges in Sindh (>550 mm) submerged millions of hectares of kharif paddy for weeks.
-- **Groundwater depletion in the Cauvery Delta:** Intensive tubewell pumping depletes regional aquifers without farmers having visibility into regional storage trends.
+Across South Asia, 86% of India's farmers cultivate holdings under 2 hectares, bearing the brunt of accelerating climate extremes:
+- **Terminal heatwaves in Punjab:** In March 2022, temperatures reached 40°C by mid-March during wheat grain filling, triggering extensive pollen sterility and 10–35% yield losses.
+- **Flash floods in the Indus Basin and Bengal Delta:** In August 2022, about one-third of Pakistan was inundated, with over 8 million acres of crops lost to monsoon deluges.
 
 While NASA operates constellation-grade Earth observation missions, raw files (HDF5, NetCDF, GEE collections) are trapped in scientific silos. Furthermore, generic weather apps provide regional forecasts without crop phenology context, generating false alarms (e.g., alarming a farmer about low NDVI on a field that was sown 4 days ago, or applying flowering heat thresholds to a vegetative crop).
 
@@ -46,23 +45,23 @@ KisanRadar bridges the gap from space to soil:
    - **NWP Forecast:** Open-Meteo 7-day numerical weather predictions provide forward-looking precipitation and temperature trajectory.
 
 2. **Crop Phenology & Scientific Stage Gating:**
-   - Thermal accumulation (GDD with $T_{\text{base}} = 10^\circ\text{C}$ for rice/maize, $5^\circ\text{C}$ for wheat) models biological stage.
-   - **Terminal Heat Gating:** Wheat's critical $31^\circ\text{C}$ threshold is strictly active during the reproductive anthesis window ($1050 \le \text{GDD} \le 1450$). During vegetative tillering, extreme vegetative thresholds ($36\text{--}38^\circ\text{C}$) prevent false alarms.
+   - Thermal accumulation (GDD with Tbase = 10°C for rice/maize, 5°C for wheat) models biological stage.
+   - **Terminal Heat Gating:** Wheat's critical 31°C threshold is strictly active during the reproductive anthesis window (GDD 1050 to 1450). During vegetative tillering, extreme vegetative thresholds (36–38°C) prevent false alarms.
    - **Canopy Gating:** NDVI vegetation stress is suppressed during emergence (bare soil) and ripening (natural senescence).
    - **Flood Floor:** A strict 20 mm rainfall floor ensures dry-season showers never trigger flood false alarms.
 
 3. **Literature-Derived Scenario Impact & STRV Adaptation:**
    - Yield penalties are modeled via literature-derived damage functions (ICAR-NICRA, IPCC AR6, IRRI field trials) and labeled as **scenario estimates**.
-   - Wheat terminal heat losses are calibrated against the March 2022 benchmark ($25\%$ cap within the documented $10\text{--}35\%$ range).
-   - Crops at maturity are gated out ($0.0\%$ unmitigated loss) to reflect post-season completion.
-   - Grounded adaptation packages: Safe Alternate Wetting and Drying (Safe AWD, saving 15–20% water), Submergence-Tolerant Rice (Swarna-Sub1, withstanding 14 days underwater with $+1.8\text{ t/ha}$ recovery), Drought-Tolerant Cultivars (Sahbhagi Dhan, $+0.8\text{ to }1.0\text{ t/ha}$), and Happy Seeder in-situ residue mulching.
+   - Wheat terminal heat losses are calibrated against the March 2022 benchmark (25% cap within the documented 10–35% range; model at upper cap).
+   - Crops at maturity are gated out (0.0% unmitigated loss) to reflect post-season completion.
+   - Grounded adaptation packages: Safe Alternate Wetting and Drying (Safe AWD, saving 15–20% water), Submergence-Tolerant Rice (Swarna-Sub1, +1.0 to 3.0 t/ha recovery, IRRI trials; not effective under stagnant flooding deeper than 20 cm for over 20 days), Drought-Tolerant Cultivars (Sahbhagi Dhan, +0.8 to 1.0 t/ha), and Happy Seeder in-situ residue mulching (common practice).
    - Multilingual accessibility in **English, Hindi, Tamil, Bengali, Punjabi, and Telugu**.
 
 4. **Archived NASA Telemetry Replays:**
    Interactive replays allow judges and users to examine authentic NASA telemetry during landmark historical shocks:
-   - **Punjab March 2022 Heat Shock:** MODIS LST Day ($38.0^\circ\text{C}$), POWER Tmax ($38.3^\circ\text{C}$), Heat Risk 96/100, Yield Loss 25.0%.
-   - **Pakistan Sindh August 2022 Deluge:** GPM IMERG 30d rain ($563.5\text{ mm}$, 100th percentile), Flood Risk 100/100.
-   - **Tamil Nadu December 2023 Cyclone Michaung:** GPM IMERG 30d rain ($656.3\text{ mm}$), Flood Risk 100/100.
+   - **Punjab March 2022 Heat Shock:** Temperatures reached 40°C by mid-March. Replay measured: MODIS LST Day 38.0°C, POWER Tmax 38.3°C, Heat Risk 96/100, Yield Loss 25.0% (model at upper cap).
+   - **Pakistan Sindh August 2022 Deluge:** About one-third of Pakistan inundated, over 8 million acres of crops lost. Replay measured: GPM IMERG 30d rain 563.5 mm (100th percentile), Flood Risk 100/100.
+   - **Tamil Nadu December 2023 Cyclone Michaung:** GPM IMERG 30d rain 656.2 mm (95.8th percentile), NASA POWER cross-check 556.7 mm (90.9th percentile, 15.2% gap — below 30% flag threshold), Flood Risk 100/100.
 
 ---
 
@@ -93,9 +92,10 @@ The following authentic NASA datasets are queried and computed live in KisanRada
 ---
 
 ### Space Agency Partner & Other Data
+- **Google Earth Engine (GEE):** Cloud geospatial analysis platform used to query MODIS, Landsat, SMAP, GRACE-FO, and GPM IMERG image collections.
 - **Open-Meteo Numerical Weather Prediction (NWP):** `OPEN_METEO_SEAMLESS_DAILY_V1` (~11 km resolution) provides 7-day forward forecasts for maximum temperature and precipitation accumulation (explicitly labeled as non-NASA NWP).
 - **OpenStreetMap:** Standard base tile cartography (`https://{s}.tile.openstreetmap.org`).
-- **ICAR-NICRA & IRRI Field Documentation:** Agronomic thresholds, Stress-Tolerant Variety (STRV) yield buffers (Swarna-Sub1, Sahbhagi Dhan, HD 3385), and Safe AWD water savings percentages.
+- **ICAR-NICRA & IRRI Field Documentation:** Agronomic thresholds and adaptation package references (Swarna-Sub1, Sahbhagi Dhan, Happy Seeder, Safe AWD).
 - **Python Libraries:** FastAPI, Uvicorn, Google Earth Engine Python API (`earthengine-api`), NumPy, SciPy, Requests, Pydantic, Dotenv, Playwright, Pytest.
 - **Frontend Libraries:** Leaflet.js (v1.9.4), Chart.js (v4.4.1).
 
@@ -103,8 +103,8 @@ The following authentic NASA datasets are queried and computed live in KisanRada
 
 ### Use of Artificial Intelligence
 In accordance with the 2026 Space Apps Challenge rules on AI disclosure:
-- **LLM Usage:** Claude Sonnet 4.6 and Gemini 3.8 Flash were utilized as development assistants for code structure, drafting multilingual translations (Hindi, Tamil, Bengali, Punjabi, Telugu), and generating unit test assertions.
-- **No Synthetic Earth Observation Data:** No generative AI, synthetic models, or simulated fallbacks were used to produce, invent, or interpolate NASA satellite observations. Every number in KisanRadar is retrieved directly from NASA APIs or Google Earth Engine.
+- **LLM Usage:** ChatGPT, Claude, and a Gemini-based coding agent were used as development assistants for code structure, drafting multilingual translations (Hindi, Tamil, Bengali, Punjabi, Telugu), and generating unit test assertions. An AI-compiled research brief was used to collate published field-trial data and agronomic thresholds.
+- **No Synthetic Earth Observation Data:** No AI tools were used to generate, invent, or interpolate NASA satellite observation values. Every number in KisanRadar is retrieved directly from NASA APIs or Google Earth Engine.
 - **Machine Translation Disclaimer:** All non-English advisory text generated in the application is explicitly labeled with the disclaimer: *"Machine-translated, verify with local extension / Krishi Vigyan Kendra (KVK)."*
 
 ---
@@ -116,18 +116,20 @@ In accordance with the 2026 Space Apps Challenge rules on AI disclosure:
 SLIDE 1: TITLE & CHALLENGE
 --------------------------------------------------------------------------------
 Title: KisanRadar: Hyper-Local Multi-Hazard Resilience for Smallholders
-Subtitle: NASA Space Apps Challenge 2026 | Track: 'Field Shift: Adapting Farms with NASA Data'
-Team: KisanRadar
-Visual: Satellite constellation diagram connecting to a smallholder farm in South Asia.
+Subtitle: NASA Space Apps Challenge 2026 | 'Field Shift: Adapting Farms with NASA Data'
+Team: TODO: Team Name | Members: TODO: List member names
 Core Tagline: "Bridging the last-mile gap from NASA Earth observations to 1-hectare farms."
+Open Source: MIT License | Zero Mock Data
 ================================================================================
 
 ================================================================================
 SLIDE 2: THE PROBLEM: TRAPPED TELEMETRY & FALSE ALARMS
 --------------------------------------------------------------------------------
-- 400M+ smallholders across South Asia face compound climate shocks: terminal heat, flash droughts, deluge.
-- NASA operates premier satellite missions (GPM, SMAP, MODIS, Landsat, GRACE), but telemetry is trapped in scientific archives.
-- Generic weather apps fail farmers: they ignore crop stage, generating false alarms (e.g. warning of "vegetation stress" on bare soil 4 days after sowing).
+- 86% of India's farmers cultivate holdings under 2 hectares.
+- Terminal Heat: March 2022 reached 40°C by mid-March in Punjab (10–35% wheat yield loss).
+- Flash Floods: August 2022 inundated 1/3 of Pakistan; over 8M crop acres lost.
+- Trapped Data: NASA constellation telemetry is siloed in HDF5/NetCDF/GEE archives.
+- False Alarms: Generic weather apps ignore crop stage (e.g. low NDVI alarm on bare soil).
 ================================================================================
 
 ================================================================================
@@ -144,43 +146,46 @@ SLIDE 3: MULTI-MISSION NASA DATA PIPELINE (ZERO MOCK DATA)
 ================================================================================
 SLIDE 4: THE SCIENCE ENGINE: PERCENTILES & GDD PHENOLOGY
 --------------------------------------------------------------------------------
-- Percentiles over Fixed Limits: Every observation is benchmarked against the historical distribution of its exact calendar window.
-- Phenology Stage Gating: GDD models biological stage ($T_{\text{base}} = 10^\circ\text{C}$ rice, $5^\circ\text{C}$ wheat).
-- Anthesis Gating: Critical $31^\circ\text{C}$ wheat threshold is active ONLY during flowering.
-- Canopy Gating: NDVI stress is suppressed during emergence and ripening.
-- 20mm Flood Floor: Prevents light showers from triggering false flood alerts.
+- Percentiles over Fixed Limits: Every reading vs 2001-present window distribution.
+- GDD Phenology: Tracks crop stage (Tbase 10°C rice/maize, 5°C wheat).
+- Stage Gating: Wheat 31°C limit active only during flowering/grain-fill.
+- Canopy Gating: NDVI stress suppressed during emergence and ripening.
+- 20 mm Flood Floor: Light showers never trigger flood alerts.
 ================================================================================
 
 ================================================================================
 SLIDE 5: ARCHIVED TELEMETRY REPLAYS: VERIFIED CLIMATE SHOCKS
 --------------------------------------------------------------------------------
-- Punjab March 2022 Terminal Heat Shock:
-  * NASA POWER Tmax 38.3°C, MODIS LST Day 38.0°C.
-  * Heat Risk: 96/100 | Scenario Yield Loss: 25.0% (CIMMYT benchmark 10-35%).
-- Pakistan Sindh August 2022 Monsoon Deluge:
-  * GPM IMERG: 563.5 mm (100th percentile) | Flood Risk: 100/100.
-- Tamil Nadu December 2023 Cyclone Michaung:
-  * GPM IMERG: 656.3 mm | Flood Risk: 100/100.
+- Punjab March 2022 Terminal Heat (Wheat):
+  * Temperatures reached 40°C by mid-March. Replay measured: POWER 38.3°C, MODIS 38.0°C.
+  * Heat Risk 96/100 | Yield Loss: documented 10–35%; model at upper cap (25%).
+- Sindh August 2022 Deluge (Rice):
+  * 1/3 of Pakistan inundated; >8M acres lost. IMERG 30d: 563.5 mm (100th pctl). Flood Risk 100/100.
+- Tamil Nadu December 2023 Cyclone Michaung (Rice):
+  * IMERG 30d: 656.2 mm (95.8th pctl); POWER cross-check: 556.7 mm (90.9th pctl, 15.2% gap).
+  * Flood Risk 100/100.
 ================================================================================
 
 ================================================================================
 SLIDE 6: GROUNDED ACTIONABLE ADVISORIES & STRV BUFFERS
 --------------------------------------------------------------------------------
-- Safe AWD (Field Water Tube): Saves 15-20% irrigation water without yield penalty.
-- Swarna-Sub1: Withstands 14 days of complete underwater submergence (+1.0 to 3.0 t/ha protected, IRRI trials).
-- Sahbhagi Dhan: Drought-tolerant rice (+0.8 to 1.0 t/ha advantage under water stress).
-- HD 3385 & Residue Mulch: Protects wheat pollen viability and conserves seedbed moisture.
-- Multilingual in 6 Regional Languages: English, Hindi, Tamil, Bengali, Punjabi, Telugu.
+- Safe AWD: Field water tube saves 15–20% irrigation water without yield penalty.
+- Swarna-Sub1: Submergence-tolerant rice (+1.0 to 3.0 t/ha). Not effective under stagnant flooding >20 cm for >20 days.
+- Sahbhagi Dhan: Drought-tolerant rice (+0.8 to 1.0 t/ha under water stress).
+- Heat Defense (common practice): HD 3385, PBW 826, Happy Seeder mulching protect pollen viability.
+- 6 Languages: English, Hindi, Tamil, Bengali, Punjabi, Telugu.
 ================================================================================
 
 ================================================================================
-SLIDE 7: OPEN SOURCE, PROVENANCE & SUB-SECOND ARCHITECTURE
+SLIDE 7: OPEN SOURCE, PROVENANCE & HIGH-PERFORMANCE ARCHITECTURE
 --------------------------------------------------------------------------------
-- Complete Transparency: Every score is accompanied by sensor dataset ID, observation timestamp, latency, and caveat notes.
-- Sub-Second Response: 0.29s cached response time for seamless live farmer interaction.
-- Cross-Sensor Integrity: Automatically flags and explains satellite-reanalysis discrepancies (>30% & >10mm).
-- Open Source: MIT Licensed, Dockerized for cloud deployment, 15/15 passing automated tests.
+- Full Transparency: Dataset ID, observation date, latency, and caveats displayed.
+- Performance: Cached presets 0.3 s; live analysis ~19 s cold.
+- Cross-Sensor Audit: Flags satellite vs reanalysis discrepancies (>30% & >10mm).
+- Open Source: MIT License, Dockerized, 15/15 passing automated regression tests.
+- Zero Mock Telemetry: All observations queried from NASA APIs / Earth Engine.
 ================================================================================
+```
 ```
 
 ---

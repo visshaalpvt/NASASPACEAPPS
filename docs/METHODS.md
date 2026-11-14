@@ -87,9 +87,9 @@ Compares 72-hour precipitation (NASA GPM IMERG and numerical forecast) against t
   - *Emergence/Newly Sown:* When a crop is newly sown ($<14\text{ days}$ or $\text{GDD} < 150$), yield loss is gated out (`yield_applicable: False`, unmitigated loss $0.0\%$), because no harvestable biomass is at risk during germination/emergence.
 - **Wheat Terminal Heat Cap:** Heat loss during reproductive grain-filling is capped at $25.0\%$ (matching the documented $10\text{--}35\%$ range from the March 2022 heatwave benchmark, labeled as model upper cap).
 - **STRV Resilience Buffers:**
-  - *Swarna-Sub1:* Protects $+1.0\text{ to }3.0\text{ t/ha}$ against up to 14 days of flash flood submergence (IRRI trials).
-  - *Sahbhagi Dhan:* Protects $+0.8\text{ to }1.0\text{ t/ha}$ under drought stress.
-  - *Safe Alternate Wetting and Drying (Safe AWD):* Conserves $15\text{--}20\%$ irrigation water.
+  - *Swarna-Sub1:* Protects +1.0 to 3.0 t/ha against flash flood submergence (IRRI trials; not effective under stagnant flooding deeper than 20 cm for over 20 days).
+  - *Sahbhagi Dhan:* Protects +0.8 to 1.0 t/ha under drought stress.
+  - *Safe Alternate Wetting and Drying (Safe AWD):* Conserves 15–20% irrigation water (IRRI guidelines; referenced in research brief).
 
 ---
 
@@ -101,3 +101,10 @@ Compares 72-hour precipitation (NASA GPM IMERG and numerical forecast) against t
 - **MODIS (MOD13Q1 / MOD11A1):** 250 m (NDVI) / 1 km (LST).
 - **Landsat 8/9 (Collection 2 Tier 1 L2):** 30 m field parcel level.
 - **Open-Meteo NWP:** ~11 km numerical forecast (explicitly labeled as non-NASA NWP).
+
+---
+
+## 6. Heuristics & Record Length Caveats
+- **Saturated-Soil Drought Override (Heuristic):** When absolute root-zone wetness fraction $\theta_{\text{root}} \ge 0.50$ (near field capacity), soil drought risk is zeroed out regardless of historical percentile. This is a physical heuristic, not a statistical model, and is documented as such.
+- **SMAP Short Record:** SMAP L4 data begins in 2015, providing ~10–12 years of historical comparison. Percentiles computed from this short record are less stable than the 24-year NASA POWER baseline. The UI labels SMAP as "(short record 2015+)".
+- **Safe AWD Water Savings (15–20%):** Referenced from IRRI Safe AWD guidelines and research brief; exact savings vary by soil type, season, and water management.

@@ -11,7 +11,7 @@
 
 ## 🌾 Overview
 
-Smallholder farmers across South Asia (India, Pakistan, Bangladesh) face compound, accelerating climate hazards: scorching terminal heatwaves that abort grain filling, flash droughts that desiccate rainfed crops, and monsoon cloudbursts that submerge delta paddy fields. 
+Across South Asia, 86% of India's farmers cultivate holdings under 2 hectares, bearing the brunt of accelerating climate hazards: scorching terminal heatwaves that abort grain filling, flash droughts that desiccate rainfed crops, and monsoon cloudbursts that submerge delta paddy fields. 
 
 While NASA operates world-class Earth observation satellites, this telemetry remains locked in scientific repositories (HDF5, NetCDF, GEE image collections) inaccessible to a farmer with a 1-hectare holding.
 
@@ -19,9 +19,9 @@ While NASA operates world-class Earth observation satellites, this telemetry rem
 1. **Hyper-Local Risk Scoring (0–100):** Real-time diagnoses of **Drought**, **Terminal Heat**, **Flash Flood**, and **Canopy Vegetation Stress**.
 2. **Empirical Climatological Baselines:** Every observation is evaluated against the 2001–present historical distribution of that exact calendar window (percentiles, not arbitrary static thresholds).
 3. **Phenology & Stage Gating:** Growing Degree Day (GDD) tracking ensures terminal heat thresholds only trigger during critical reproductive/anthesis windows, and canopy NDVI anomalies are suppressed during emergence and ripening.
-4. **Actionable Climate-Smart Advisories:** Grounded in field trials from **IRRI**, **ICAR-NICRA**, and **CIMMYT** (Safe AWD, Swarna-Sub1, Sahbhagi Dhan, HD 3385, Happy Seeder mulching), translated across 6 regional languages.
+4. **Actionable Climate-Smart Advisories:** Grounded in research brief benchmarks (Safe AWD, Swarna-Sub1, Sahbhagi Dhan, common practice wheat heat defense and Happy Seeder mulching), translated across 6 regional languages.
 5. **Historical Replays:** Interactive telemetry replaying verified historical shocks (Punjab March 2022 Heatwave, Pakistan Sindh August 2022 Deluge, Tamil Nadu December 2023 Cyclone Michaung).
-6. **Zero Mock Data Policy:** Every single score and chart is computed directly from live telemetry or authentic archived NASA feeds.
+6. **Zero Mock Data Policy:** Every single score and chart is computed directly from live telemetry or authentic archived NASA feeds (cached presets 0.3 s; live analysis ~19 s cold).
 
 ---
 
@@ -43,18 +43,19 @@ While NASA operates world-class Earth observation satellites, this telemetry rem
 ## 📊 Replay Case Studies (Archived NASA Telemetry)
 
 1. **Punjab March 2022 Terminal Heat Shock** (`30.90°N, 75.85°E`, Wheat):
-   - **NASA POWER Tmax:** Exceeded 36–38°C during grain-filling (anthesis window).
+   - **Historical Context:** Temperatures reached 40°C by mid-March during grain-filling.
+   - **Replay Measured Values:** NASA POWER Tmax 38.3°C, MODIS LST Day 38.0°C.
    - **Heat Risk Score:** 96/100.
-   - **Yield Impact:** Scenario estimate capped at 25.0% loss (documented CIMMYT/ICAR benchmark: 10–35%).
-   - **MODIS LST Day:** 38.0°C.
+   - **Yield Impact:** Scenario estimate capped at 25.0% loss (documented CIMMYT/ICAR benchmark: 10–35%; model at upper cap).
 
 2. **Pakistan Sindh August 2022 Flood Deluge** (`26.00°N, 68.50°E`, Rice):
-   - **NASA GPM IMERG 30d Rain:** 563.5 mm (100th percentile).
+   - **Historical Context:** In August 2022, about one-third of Pakistan was inundated, with over 8 million acres of crops lost to monsoon deluges.
+   - **Replay Measured Values:** NASA GPM IMERG 30d Rain 563.5 mm (100th percentile).
    - **Flood Risk Score:** 100/100.
-   - **Advisory:** Swarna-Sub1 submergence resilience (+1.5–2.5 t/ha recovery).
+   - **Advisory:** Swarna-Sub1 submergence resilience (+1.0 to 3.0 t/ha recovery, IRRI trials; not effective under stagnant flooding deeper than 20 cm for over 20 days).
 
 3. **Tamil Nadu December 2023 Cyclone Michaung** (`13.08°N, 80.27°E`, Rice):
-   - **NASA GPM IMERG 30d Rain:** 656.3 mm (Chennai coastal epicenter).
+   - **Replay Measured Values:** NASA GPM IMERG 30d Rain 656.2 mm (95.8th percentile); NASA POWER cross-check 556.7 mm (90.9th percentile, 15.2% gap — below the 30% flag threshold).
    - **Flood Risk Score:** 100/100.
 
 ---
@@ -68,8 +69,8 @@ While NASA operates world-class Earth observation satellites, this telemetry rem
 ### Installation Steps
 ```bash
 # Clone the repository
-git clone https://github.com/kisanradar/kisanradar.git
-cd kisanradar
+git clone https://github.com/visshaalpvt/NASASPACEAPPS.git
+cd NASASPACEAPPS
 
 # Install dependencies
 pip install -r requirements.txt
@@ -115,8 +116,8 @@ python scripts/test_browser_ui.py
 ## 🤖 Artificial Intelligence Disclosure
 
 In compliance with the 2026 NASA Space Apps Challenge Submission Rules:
-- **Large Language Models:** Claude Sonnet 4.6 and Gemini 3.8 Flash were utilized as development assistants for code scaffolding, drafting multilingual translations, and generating unit test mocks.
-- **Zero Synthetic Live Telemetry:** No AI or synthetic data generation tools were used to simulate or interpolate NASA Earth observation feeds. Every number presented in the dashboard is retrieved directly from NASA APIs or Google Earth Engine.
+- **LLM Usage:** ChatGPT, Claude, and a Gemini-based coding agent were used as development assistants for code scaffolding, drafting multilingual translations, and generating unit test assertions. An AI-compiled research brief was used to collate published field-trial data and agronomic thresholds.
+- **Zero Synthetic Live Telemetry:** No AI tools were used to generate, invent, or interpolate NASA satellite observation values. Every number presented in the dashboard is retrieved directly from NASA APIs or Google Earth Engine.
 
 ---
 

@@ -17,8 +17,8 @@ SOLUTIONS_DB = {
     "safe_awd": {
         "id": "safe_awd",
         "category": "drought",
-        "evidence_source": "IRRI & ICAR-CRRI Field Trials (2018-2023)",
-        "benefit": "Conserves 15-20% irrigation water without yield penalty (IRRI & ICAR-CRRI trials)",
+        "evidence_source": "IRRI Safe AWD Guidelines & ICAR-NICRA Extension Reports",
+        "benefit": "Conserves 15-20% irrigation water without yield penalty (IRRI guidelines)",
         "translations": {
             "en": {
                 "title": "Safe Alternate Wetting and Drying (Safe AWD)",
@@ -94,36 +94,36 @@ SOLUTIONS_DB = {
         "id": "submergence_rice",
         "category": "flood",
         "evidence_source": "IRRI Sub1 Gene Field Documentation (ICAR-CRRI)",
-        "benefit": "Withstands 14 days of complete underwater submergence with +1.0 to 3.0 t/ha yield recovery (IRRI SUB1 trials)",
+        "benefit": "Submergence-tolerant rice with +1.0 to 3.0 t/ha yield recovery (IRRI SUB1 trials). Not effective under stagnant flooding deeper than 20 cm for over 20 days.",
         "translations": {
             "en": {
                 "title": "Submergence-Tolerant Rice (Swarna-Sub1 / Sambha Mahsuri-Sub1)",
                 "action": "In flood-prone lowlands and cyclone-affected coastal deltas, adopt Swarna-Sub1 or BINA dhan-11. These varieties carry the SUB1A dormancy gene, halting elongation underwater and reviving upon water recession.",
-                "note": "Ensure drainage channels are cleared before peak monsoon storms to prevent waterlogging beyond 14 days."
+                "note": "Ensure drainage channels are cleared before peak monsoon storms. Not effective under stagnant flooding deeper than 20 cm for over 20 days."
             },
             "hi": {
                 "title": "बाढ़-सहनशील धान (स्वर्णा-सब1 / साम्भा महसूरी-सब1)",
-                "action": "जलभराव और बाढ़ प्रभावित क्षेत्रों में 'स्वर्णा-सब1' किस्म लगाएं। यह धान 14 दिनों तक पानी में पूरी तरह डूबे रहने के बाद भी खराब नहीं होता और पानी उतरने पर पुनः बढ़वार शुरू कर देता है।",
+                "action": "जलभराव और बाढ़ प्रभावित क्षेत्रों में 'स्वर्णा-सब1' किस्म लगाएं। यह धान जलमग्नता सहन करती है और पानी उतरने पर पुनः बढ़वार शुरू कर देती है।",
                 "note": "मानसून पूर्व जल निकासी की नालियों को साफ रखें।"
             },
             "ta": {
                 "title": "வெள்ளத்தைத் தாங்கும் நெல் ரகம் (ஸ்வர்ணா-சப்1)",
-                "action": "வெள்ளம் மற்றும் அதிக மழை வாய்ப்புள்ள டெல்டா பகுதிகளில் 'ஸ்வர்ணா-சப்1' ரகத்தை நடவு செய்யவும். இது 14 நாட்கள் வரை முழுமையாக நீரில் மூழ்கியிருந்தாலும் அழுகாமல் உயிர்வாழும்.",
+                "action": "வெள்ளம் மற்றும் அதிக மழை வாய்ப்புள்ள டெல்டா பகுதிகளில் 'ஸ்வர்ணா-சப்1' ரகத்தை நடவு செய்யவும். இது நீரில் மூழ்கியிருந்தாலும் அழுகாமல் உயிர்வாழும்.",
                 "note": "களத்தில் நீர் தேங்காமல் இருக்க வடிகால் வாய்க்கால்களை தூர்வாரவும்."
             },
             "bn": {
                 "title": "বন্যা ও জলমগ্নতা সহনশীল ধান (স্বর্ণা-সাব১ / বিনা ধান-১১)",
-                "action": "বন্যাপ্রবণ নিচু জমিতে স্বর্ণা-সাব১ বা বিনা ধান-১১ চাষ করুন। এই জাতগুলো পানির নিচে ১৪ দিন সম্পূর্ণ নিমজ্জিত থাকলেও নষ্ট হয় না এবং পানি কমলে দ্রুত বাড়ে।",
+                "action": "বন্যাপ্রবণ নিচু জমিতে স্বর্ণা-সাব১ বা বিনা ধান-১১ চাষ করুন। এই জাতগুলো জলমগ্নতা সহনশীল এবং পানি কমলে দ্রুত বাড়ে।",
                 "note": "পানি দ্রুত নিষ্কাশনের জন্য নিকাশি নালাগুলো পরিষ্কার রাখুন।"
             },
             "pa": {
                 "title": "ਹੜ੍ਹ-ਸਹਿਣਸ਼ੀਲ ਝੋਨਾ (ਸਵਰਨਾ-ਸਬ1)",
-                "action": "ਹੜ੍ਹਾਂ ਜਾਂ ਜ਼ਿਆਦਾ ਪਾਣੀ ਵਾਲੇ ਇਲਾਕਿਆਂ ਵਿੱਚ ਸਵਰਨਾ-ਸਬ1 ਲਗਾਓ। ਇਹ ਕਿਸਮ 14 ਦਿਨਾਂ ਤੱਕ ਪਾਣੀ ਵਿੱਚ ਡੁੱਬੀ ਰਹਿਣ ਦੇ ਬਾਵਜੂਦ ਬਚੀ ਰਹਿੰਦੀ ਹੈ।",
+                "action": "ਹੜ੍ਹਾਂ ਜਾਂ ਜ਼ਿਆਦਾ ਪਾਣੀ ਵਾਲੇ ਇਲਾਕਿਆਂ ਵਿੱਚ ਸਵਰਨਾ-ਸਬ1 ਲਗਾਓ। ਇਹ ਕਿਸਮ ਜਲਮਗਨਤਾ ਸਹਿਣ ਕਰਦੀ ਹੈ ਅਤੇ ਪਾਣੀ ਉਤਰਨ ਤੇ ਮੁੜ ਵਧਦੀ ਹੈ।",
                 "note": "ਬਰਸਾਤ ਤੋਂ ਪਹਿਲਾਂ ਪਾਣੀ ਦੇ ਨਿਕਾਸ ਵਾਲੀਆਂ ਨਾਲੀਆਂ ਸਾਫ਼ ਕਰੋ।"
             },
             "te": {
                 "title": "ముంపును తట్టుకునే వరి (స్వర్ణ-సబ్1)",
-                "action": "వరదలు మరియు నీరు నిల్వ ఉండే ప్రాంతాల్లో స్వర్ణ-సబ్1 రకాన్ని సాగు చేయండి. ఇది 14 రోజుల పాటు నీటిలో మునిగి ఉన్నా తట్టుకుని తిరిగి పెరుగుతుంది.",
+                "action": "వరదలు మరియు నీరు నిల్వ ఉండే ప్రాంతాల్లో స్వర్ణ-సబ్1 రకాన్ని సాగు చేయండి. ఇది జలమగ్నతను తట్టుకుని తిరిగి పెరుగుతుంది.",
                 "note": "మురుగు నీరు త్వరగా బయటకు వెళ్లడానికి డ్రైనేజీ కాలువలను శుభ్రం చేసుకోండి."
             }
         }
@@ -131,12 +131,12 @@ SOLUTIONS_DB = {
     "terminal_heat_wheat": {
         "id": "terminal_heat_wheat",
         "category": "heat",
-        "evidence_source": "ICAR-IIWBR Karnal Terminal Heat Shock Benchmarks (2022-2024)",
+        "evidence_source": "Common agronomic practice & extension guidelines (ICAR/CIMMYT)",
         "benefit": "Protects against pollen sterility and test weight shriveling during March heat spikes",
         "translations": {
             "en": {
-                "title": "Terminal Heat Resilient Wheat (HD 3385 / PBW 826 / DBW 187)",
-                "action": "Sow heat-tolerant varieties HD 3385 or PBW 826 in late October / early November. When forecast maximum temperatures exceed 31°C during flowering/grain-fill, provide light evening irrigation or micro-sprinkler misting to cool the canopy.",
+                "title": "Terminal Heat Defense: Resilient Varieties (common practice: HD 3385, PBW 826, DBW 187)",
+                "action": "Adopt heat-tolerant cultivars such as HD 3385 or PBW 826 as common practice. When forecast maximum temperatures exceed 31°C during flowering/grain-fill, provide light evening irrigation or micro-sprinkler misting to cool the canopy.",
                 "note": "Timely or early sowing aligns the sensitive anthesis phase with cooler February temperatures, avoiding March heat shock."
             },
             "hi": {
@@ -169,11 +169,11 @@ SOLUTIONS_DB = {
     "crop_residue_mulch": {
         "id": "crop_residue_mulch",
         "category": "moisture_conservation",
-        "evidence_source": "ICAR-CSSRI & CIMMYT Conservation Agriculture Benchmarks",
-        "benefit": "Conserves soil moisture and suppresses weeds in zero-till seedbed (ICAR-CSSRI & CIMMYT)",
+        "evidence_source": "Common conservation agriculture practice (CIMMYT/ICAR)",
+        "benefit": "Conserves soil moisture and suppresses weeds in zero-till seedbed",
         "translations": {
             "en": {
-                "title": "In-Situ Crop Residue Mulching (Happy Seeder / Surface Retained Mulch)",
+                "title": "In-Situ Crop Residue Mulching (Happy Seeder / Surface Retained Mulch - common practice)",
                 "action": "Retain paddy straw residue on field surface using Happy Seeder / Super Seeder. Mulch blanket protects soil moisture and suppresses weed emergence.",
                 "note": "Avoid burning crop stubble; surface retention builds organic carbon and improves soil structure."
             },
@@ -245,8 +245,8 @@ SOLUTIONS_DB = {
     "harvest_maturity": {
         "id": "harvest_maturity",
         "category": "harvest",
-        "evidence_source": "ICAR-CRRI & SAU Post-Harvest Loss Mitigation Guidelines",
-        "benefit": "Prevents 5-15% field shattering and fungal spoilage losses through timely drain and harvest",
+        "evidence_source": "Common agronomic practice for post-harvest loss mitigation",
+        "benefit": "Timely field drainage and harvest readiness minimizes pre- and post-harvest crop losses",
         "translations": {
             "en": {
                 "title": "Maturity Stage & Harvest Readiness Management",
