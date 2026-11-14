@@ -1,0 +1,30 @@
+# Environment & Secrets
+.env
+*.env
+*.key
+*.pem
+*.json_credentials
+*service_account*.json
+*service-account*.json
+
+# Data cache (pre-computed real telemetry cache is managed separately, local volatile cache ignored)
+data/cache/
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest & Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# OS Specific
+.DS_Store
+Thumbs.db

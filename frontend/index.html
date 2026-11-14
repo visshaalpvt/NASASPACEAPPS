@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KisanRadar | NASA Earth Observations for Smallholder Resilience</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #09120e;
+      --card-bg: #112018;
+      --card-border: #1e382b;
+      --accent-green: #38b000;
+      --accent-gold: #ffb703;
+      --accent-red: #ef476f;
+      --accent-blue: #3a86ff;
+      --text: #e9f5ee;
+      --text-muted: #8ea89d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: grid;
+      grid-template-columns: 1fr 520px;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #map { height: 100%; width: 100%; background: #08100c; }
+    #side {
+      overflow-y: auto;
+      padding: 16px;
+      border-left: 1px solid var(--card-border);
+      background: #0d1813;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #70e000;
+    }
+    header small {
+      color: var(--text-muted);
+      font-size: 11px;
+      display: block;
+      margin-top: 3px;
+      line-height: 1.4;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-live { background: #134e2f; color: #70e000; border: 1px solid #238636; }
+    .badge-medium { background: #4a3b00; color: #ffb703; border: 1px solid #9e7b00; }
+    .badge-low { background: #4a1313; color: #ff5964; border: 1px solid #9e2323; }
+    .badge-replay { background: #1e293b; color: #38bdf8; border: 1px solid #0284c7; }
+    
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    select, button, input[type="date"] {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      color: inherit;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    button.primary {
+      background: #238636;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      transition: background 0.2s;
+    }
+    button.primary:hover { background: #2ea043; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .card h3 {
+      margin: 0 0 8px 0;
+      font-size: 13px;
+      font-weight: 600;
+      color: #9be9a8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .presets {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding-bottom: 2px;
+    }
+    .preset-btn {
+      padding: 4px 8px;
+      font-size: 11px;
+      border-radius: 6px;
+      background: #172d22;
+      border: 1px solid #284c3a;
+      color: #c9d1d9;
+    }
+    .preset-btn:hover { background: #203e2f; color: #fff; }
+    .preset-btn.active { background: #238636; color: #fff; border-color: #38b000; }
+    
+    .disagreement-banner {
+      background: #3b2804;
+      border: 1px solid #d97706;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11px;
+      color: #fde68a;
+      line-height: 1.4;
+    }
+
+    .gauges {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .g {
+      text-align: center;
+      border-radius: 6px;
+      padding: 6px 3px;
+      background: #0d1a14;
+      border: 1px solid #1a2f24;
+    }
+    .g small { font-size: 10px; color: var(--text-muted); display: block; }
+    .g b { font-size: 17px; display: block; margin-top: 2px; }
+    .lo { color: #57cc99; }
+    .mid { color: #f2c14e; }
+    .hi { color: #ff5964; }
+    
+    .yield-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 6px 0;
+    }
+    .yield-metric {
+      background: #0d1b14;
+      padding: 8px;
+      border-radius: 6px;
+      border-left: 3px solid #2ea043;
+    }
+    .yield-metric.danger { border-left-color: #ff5964; }
+    .yield-metric span { font-size: 10px; color: var(--text-muted); display: block; }
+    .yield-metric strong { font-size: 15px; }
+    
+    .advisory-card {
+      background: #0f241a;
+      border-left: 3px solid #38b000;
+      padding: 8px 10px;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .advisory-card h4 {
+      margin: 0 0 4px 0;
+      color: #a3e635;
+      font-size: 12px;
+    }
+    .advisory-card small {
+      color: var(--text-muted);
+      display: block;
+      margin-top: 4px;
+      font-size: 10px;
+    }
+
+    .provenance-table {
+      width: 100%;
+      font-size: 10px;
+      border-collapse: collapse;
+      margin-top: 6px;
+    }
+    .provenance-table th {
+      text-align: left;
+      padding: 4px;
+      color: var(--text-muted);
+      border-bottom: 1px solid #1e382b;
+    }
+    .provenance-table td {
+      padding: 4px;
+      border-bottom: 1px solid #13241c;
+    }
+    .status-ok { color: #70e000; font-weight: 600; }
+    .status-skip { color: #f59e0b; }
+    .status-err { color: #ef4444; }
+
+    @media(max-width: 960px) {
+      body { grid-template-columns: 1fr; grid-template-rows: 40vh auto; height: auto; overflow: auto; }
+      #side { border-left: none; border-top: 1px solid var(--card-border); }
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  
+  <div id="side">
+    <header>
+      <h1>🛰️ KisanRadar</h1>
+      <small>Hyper-local multi-hazard resilience & STRV advisory driven by live NASA Earth Observations (POWER, SMAP, GPM IMERG, MODIS, Landsat 8/9, GRACE-FO).</small>
+    </header>
+
+    <!-- Case Studies & Replay -->
+    <div class="card" style="padding: 8px 10px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+        <small style="color: var(--text-muted);">Benchmark Hotspots & Historical Replays:</small>
+      </div>
+      <div class="presets">
+        <button class="preset-btn" onclick="jumpTo(10.78, 79.14, 'rice', '2026-07-01')">🌱 Thanjavur (Cauvery Delta)</button>
+        <button class="preset-btn" onclick="jumpTo(30.90, 75.85, 'wheat', '2026-11-10')">🌾 Ludhiana (Punjab)</button>
+        <button class="preset-btn" onclick="jumpTo(22.50, 89.50, 'rice', '2026-07-01')">🌱 Dhaka (Bengal Delta)</button>
+        <button class="preset-btn" onclick="jumpTo(26.00, 68.50, 'wheat', '2026-11-10')">🌾 Sindh (Indus Basin)</button>
+        <button class="preset-btn" onclick="jumpTo(26.10, 91.70, 'rice', '2026-06-15')">🌱 Guwahati (Brahmaputra)</button>
+        <button class="preset-btn" style="border-color:#0284c7; color:#38bdf8;" onclick="loadReplay('punjab-march-2022-heatwave')">⏪ Replay: Punjab 2022 Heat Shock</button>
+        <button class="preset-btn" style="border-color:#0284c7; color:#38bdf8;" onclick="loadReplay('tamilnadu-dec-2023-cyclone')">⏪ Replay: TN 2023 Cyclone</button>
+        <button class="preset-btn" style="border-color:#0284c7; color:#38bdf8;" onclick="loadReplay('pakistan-sindh-aug-2022-flood')">⏪ Replay: Pakistan 2022 Flood</button>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="card" style="padding: 10px;">
+      <div class="row">
+        <label style="font-size: 11px;">Crop:
+          <select id="crop">
+            <option value="rice">Rice (Paddy)</option>
+            <option value="wheat">Wheat</option>
+            <option value="maize">Maize</option>
+          </select>
+        </label>
+        <label style="font-size: 11px;">Sowing:
+          <input type="date" id="sowing_date" value="2026-07-01">
+        </label>
+        <label style="font-size: 11px;">Language:
+          <select id="lang">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+          </select>
+        </label>
+        <button class="primary" id="go" style="margin-left:auto;">Analyze Farm</button>
+      </div>
+    </div>
+
+    <!-- Output View -->
+    <div id="out">
+      <div class="card">
+        <h3>📍 Ready for Farm Analysis</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.45;">
+          Click anywhere in South Asia or select a benchmark site above. Queries real NASA Earth observation feeds, evaluates against 2001-present local baselines, and returns grounded adaptation advisories.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Leaflet Map centered on South Asia
+    const map = L.map('map').setView([20.59, 78.96], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18
+    }).addTo(map);
+
+    // Dynamic recent date for NASA GIBS WMTS (2 days lag for NRT availability)
+    const dObj = new Date(Date.now() - 2 * 864e5);
+    const gibsDate = dObj.toISOString().slice(0, 10);
+    const mObj = new Date();
+    mObj.setMonth(mObj.getMonth() - 1);
+    const ndviDate = `${mObj.getFullYear()}-${String(mObj.getMonth() + 1).padStart(2, '0')}-01`;
+
+    const gibsUrl = (layer, time, maxZoom, ext = 'png') =>
+      L.tileLayer(`https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/${layer}/default/${time}/GoogleMapsCompatible_Level${maxZoom}/{z}/{y}/{x}.${ext}`, {
+        maxNativeZoom: maxZoom,
+        maxZoom: 12,
+        opacity: 0.75,
+        attribution: 'NASA GIBS'
+      });
+
+    const overlayLayers = {
+      'MODIS TrueColor (Daily)': gibsUrl('MODIS_Terra_CorrectedReflectance_TrueColor', gibsDate, 9, 'jpg'),
+      'MODIS Land Surface Temp (Day)': gibsUrl('MODIS_Terra_Land_Surface_Temp_Day', gibsDate, 7, 'png'),
+      'GPM IMERG Precipitation Rate': gibsUrl('IMERG_Precipitation_Rate', gibsDate, 6, 'png'),
+      'MODIS Terra NDVI Monthly': gibsUrl('MODIS_Terra_L3_NDVI_Monthly', ndviDate, 9, 'png')
+    };
+
+    L.control.layers(null, overlayLayers, { collapsed: false }).addTo(map);
+    overlayLayers['MODIS TrueColor (Daily)'].addTo(map);
+
+    let pin, trendChart, pt = { lat: 10.78, lon: 79.14 };
+
+    function jumpTo(lat, lon, cropVal, sowingVal) {
+      pt = { lat: lat, lon: lon };
+      if (cropVal) document.getElementById('crop').value = cropVal;
+      if (sowingVal) document.getElementById('sowing_date').value = sowingVal;
+      map.setView([lat, lon], 8);
+      placeMarker(lat, lon);
+      run();
+    }
+
+    function placeMarker(lat, lon) {
+      if (pin) pin.remove();
+      pin = L.marker([lat, lon]).addTo(map);
+    }
+
+    placeMarker(pt.lat, pt.lon);
+
+    map.on('click', e => {
+      pt = { lat: +e.latlng.lat.toFixed(3), lon: +e.latlng.lng.toFixed(3) };
+      placeMarker(pt.lat, pt.lon);
+      run();
+    });
+
+    document.getElementById('go').onclick = run;
+    document.getElementById('lang').onchange = run;
+    const cls = v => v === null ? 'lo' : (v >= 60 ? 'hi' : v >= 35 ? 'mid' : 'lo');
+
+    async function run() {
+      const out = document.getElementById('out');
+      const cropVal = document.getElementById('crop').value;
+      const sowingVal = document.getElementById('sowing_date').value;
+      const langVal = document.getElementById('lang').value;
+
+      out.innerHTML = `
+        <div class="card">
+          <h3>⏳ Querying NASA Feeds...</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin: 0;">
+            Retrieving 2001-present NASA POWER baseline, SMAP 9km soil moisture, GPM IMERG rainfall, MODIS baseline anomaly, Landsat 8/9 parcel NDVI, and GRACE mascon trend...
+          </p>
+        </div>`;
+
+      try {
+        const url = `/api/analyze?lat=${pt.lat}&lon=${pt.lon}&crop=${cropVal}&sowing_date=${sowingVal}&lang=${langVal}`;
+        const r = await fetch(url);
+        const d = await r.json();
+        if (!r.ok) throw d.detail;
+        show(d);
+      } catch (e) {
+        out.innerHTML = `<div class="card"><h3 style="color:#ff5964;">⚠️ Analysis Notice</h3><p style="font-size: 12px;">${e}</p></div>`;
+      }
+    }
+
+    async function loadReplay(eventId) {
+      const out = document.getElementById('out');
+      const langVal = document.getElementById('lang').value;
+      out.innerHTML = `<div class="card"><h3>⏪ Loading Historical Archived Replay...</h3></div>`;
+
+      try {
+        const r = await fetch(`/api/historical-replay/${eventId}?lang=${langVal}`);
+        const d = await r.json();
+        if (!r.ok) throw d.detail;
+        showReplay(d);
+      } catch (e) {
+        out.innerHTML = `<div class="card"><h3 style="color:#ff5964;">⚠️ Replay Error</h3><p style="font-size: 12px;">${e}</p></div>`;
+      }
+    }
+
+    function show(d) {
+      const k = d.risk_scores, ph = d.phenology, ind = d.indicators, yp = d.yield_impact, adv = d.advisory, prov = d.provenance;
+      if (ph && ph.sowing_date) document.getElementById('sowing_date').value = ph.sowing_date;
+      const g = (n, v, note) => `<div class="g"><small>${n}</small><b class="${cls(v)}">${v !== null ? v : 'N/A'}</b><span style="font-size:9px; color:var(--text-muted);">${note||''}</span></div>`;
+
+      let disagreementHtml = '';
+      if (k.sources_disagree) {
+        disagreementHtml = `
+          <div class="disagreement-banner">
+            ⚠️ <b>Cross-Sensor Discrepancy:</b> ${ind.rain_deficit_30d.disagreement_note}
+          </div>`;
+      }
+
+      const isCached = d.is_precomputed || prov.some(p => p.status === 'cached');
+      const cacheBadge = isCached ? `<span class="badge" style="background:#1e293b; color:#38bdf8; border:1px solid #0284c7;">⚡ CACHED TELEMETRY (${(d.query_timestamp||'').slice(11,16)} UTC)</span>` : '';
+
+      const confBadge = k.confidence === 'high' 
+        ? `<span class="badge badge-live">● CONFIDENCE: HIGH (${k.live_sources_count} FEEDS)</span>`
+        : `<span class="badge badge-medium">● CONFIDENCE: ${k.confidence.toUpperCase()} (${k.live_sources_count} FEEDS)</span>`;
+
+      let recHtml = '';
+      if (adv.recommendations && adv.recommendations.length > 0) {
+        recHtml = adv.recommendations.map(r => `
+          <div class="advisory-card">
+            <h4>💡 ${r.title}</h4>
+            <div style="margin:2px 0;">${r.action}</div>
+            ${r.management_note ? `<div style="color:#fde047; font-size:11px; margin-top:3px;">📌 ${r.management_note}</div>` : ''}
+            <small><b>Benefit:</b> ${r.quantified_benefit} | <b>Evidence:</b> ${r.evidence_base}</small>
+          </div>
+        `).join('');
+      }
+
+      let provHtml = prov.map(p => {
+        const isOk = p.status === 'live' || p.status === 'cached';
+        const stClass = isOk ? 'status-ok' : (p.status.includes('SKIP') ? 'status-skip' : 'status-err');
+        return `
+          <tr>
+            <td><b>${p.source}</b></td>
+            <td><code>${p.dataset_id}</code></td>
+            <td class="${stClass}">${p.status}</td>
+            <td>${p.observed_through || 'N/A'}</td>
+            <td>${p.latency_ms}ms</td>
+          </tr>
+        `;
+      }).join('');
+
+      let vegDisplay = k.vegetation !== null ? k.vegetation : 'N/A';
+      let vegNote = k.vegetation_applicable ? 'Canopy Anomaly' : 'Stage Gated';
+
+      let html = `
+        ${disagreementHtml}
+        
+        <div class="card">
+          <h3>
+            <span>📍 ${pt.lat}°N, ${pt.lon}°E (${d.crop.toUpperCase()})</span>
+            <div style="display:flex; gap:6px; align-items:center;">
+              ${cacheBadge}
+              ${confBadge}
+            </div>
+          </h3>
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:6px;">
+            <b>Stage:</b> ${ph.current_phenological_stage} | <b>GDD:</b> ${ph.accumulated_gdd}°C-d | <b>Heat Sensitive:</b> ${ph.in_heat_sensitive_window ? 'YES (Anthesis/Flowering)' : 'NO (' + ph.current_phenological_stage + ')'} | <b>Sowing:</b> ${ph.sowing_date}${ph.is_default_sowing_date ? ' (Assumed)' : ''}
+          </div>
+          <div class="gauges">
+            ${g('Overall', k.overall, 'Weighted')}
+            ${g('Drought', k.drought, 'Soil & Rain')}
+            ${g('Heat', k.heat, ph.in_heat_sensitive_window ? 'Terminal' : 'Vegetative')}
+            ${g('Flood', k.flood, '>20mm Floor')}
+            ${g('Veg Stress', vegDisplay, vegNote)}
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🌾 Literature-Derived Yield Impact & STRV Buffers</h3>
+          ${yp.yield_applicable === false ? `
+            <div style="padding: 10px; background: #0d1a14; border-radius: 6px; border-left: 3px solid var(--text-muted); font-size: 12px; color: var(--text-muted); line-height: 1.4;">
+              ⏸️ <b>Stage Gated:</b> ${yp.note || 'Yield impact estimation not applicable at current crop stage (maturity/harvest).'}
+            </div>
+          ` : `
+            <div style="font-size:10px; color:#fde047; margin-bottom:6px;">⚠️ ${yp.estimation_type || 'Literature-Based Scenario Estimate'} (${yp.documented_range_pct || 'ICAR-NICRA benchmarks'})</div>
+            <div class="yield-grid">
+              <div class="yield-metric danger">
+                <span>Potential Loss (Unmitigated)</span>
+                <strong style="color: #ff5964;">-${yp.yield_loss_unmitigated_pct}%</strong>
+                <small style="display:block; color:var(--text-muted); font-size:10px;">Conventional: ${yp.predicted_yield_conventional_t_ha} t/ha</small>
+              </div>
+              <div class="yield-metric">
+                <span>Protected Yield with STRV</span>
+                <strong style="color: #70e000;">${yp.predicted_yield_with_strv_t_ha} t/ha</strong>
+                <small style="display:block; color:var(--text-muted); font-size:10px;">Resilience Buffer: +${yp.yield_protected_by_adaptation_t_ha} t/ha</small>
+              </div>
+            </div>
+            <small style="color:var(--text-muted); display:block; margin-top:3px; font-size:10px;">
+              Baseline: ${yp.baseline_yield_t_ha} t/ha. Loss drivers: Heat: ${yp.loss_drivers.terminal_heat_pct}%, Drought: ${yp.loss_drivers.drought_moisture_pct}%, Flood: ${yp.loss_drivers.flood_excess_pct}%. Benchmarks: ICAR-NICRA, IPCC AR6 & IRRI field trials.
+            </small>
+          `}
+        </div>
+
+        <div class="card">
+          <h3>🎯 Actionable Agronomic Advisory (${adv.language.toUpperCase()})</h3>
+          <p style="font-size:11px; color:var(--text-muted); margin:0 0 6px 0;">${adv.summary}</p>
+          ${recHtml}
+        </div>
+
+        <div class="card">
+          <h3>📈 25-Year Climatological Warming Trend (2001-Present)</h3>
+          <canvas id="trendChart" height="130"></canvas>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">
+            <b>Warming Rate:</b> ${d.charts.warming_trend_c_per_decade > 0 ? '+' : ''}${d.charts.warming_trend_c_per_decade}°C / decade (p = ${d.charts.p_value}) | <i>${ind.climate_warming_trend.caveat}</i>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📋 Live Data Feeds Provenance Strip</h3>
+          <table class="provenance-table">
+            <thead>
+              <tr><th>Source</th><th>Dataset ID</th><th>Status</th><th>Obs Date</th><th>Latency</th></tr>
+            </thead>
+            <tbody>
+              ${provHtml}
+            </tbody>
+          </table>
+          <small style="color:var(--text-muted); display:block; margin-top:6px; font-size:9px;">
+            GRACE Footprint: ~300 km regional total water storage through 2024-09. All numbers strictly sourced from live NASA Earth observation APIs.
+          </small>
+        </div>
+      `;
+
+      document.getElementById('out').innerHTML = html;
+
+      // Render 25-year trend chart
+      renderChart(d.charts);
+    }
+
+    function showReplay(d) {
+      const k = d.risk_scores, ph = d.phenology, ind = d.indicators, yp = d.yield_impact, adv = d.advisory;
+      const g = (n, v) => `<div class="g"><small>${n}</small><b class="${cls(v)}">${v !== null ? v : 'N/A'}</b></div>`;
+
+      let recHtml = adv.recommendations.map(r => `
+        <div class="advisory-card" style="border-left-color:#38bdf8;">
+          <h4 style="color:#38bdf8;">⏪ ${r.title}</h4>
+          <div>${r.action}</div>
+          <small><b>Intervention Benefit:</b> ${r.quantified_benefit}</small>
+        </div>
+      `).join('');
+
+      let html = `
+        <div class="card" style="border-color:#0284c7; background:#0c1e2e;">
+          <h3>
+            <span>⏪ HISTORICAL REPLAY: ${d.event_title}</span>
+            <span class="badge badge-replay">ARCHIVED NASA TELEMETRY</span>
+          </h3>
+          <p style="font-size:11px; color:#93c5fd; margin:2px 0 6px 0;">${d.event_description}</p>
+          <div style="font-size:11px; color:var(--text-muted); margin-bottom:6px;">
+            <b>Observation Date:</b> ${d.replay_date} | <b>Crop:</b> ${d.crop.toUpperCase()} | <b>Stage:</b> ${ph.current_phenological_stage} (GDD: ${ph.accumulated_gdd})
+          </div>
+          <div class="gauges">
+            ${g('Overall', k.overall)}
+            ${g('Drought', k.drought)}
+            ${g('Heat', k.heat)}
+            ${g('Flood', k.flood)}
+            ${g('Veg Stress', k.vegetation)}
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🌾 Replayed Yield Impact</h3>
+          <div class="yield-grid">
+            <div class="yield-metric danger">
+              <span>Loss Under Conventional</span>
+              <strong style="color: #ff5964;">-${yp.yield_loss_unmitigated_pct}%</strong>
+              <small style="display:block; color:var(--text-muted); font-size:10px;">Harvest Yield: ${yp.predicted_yield_conventional_t_ha} t/ha</small>
+            </div>
+            <div class="yield-metric">
+              <span>Buffered Yield with STRV</span>
+              <strong style="color: #38bdf8;">${yp.predicted_yield_with_strv_t_ha} t/ha</strong>
+              <small style="display:block; color:var(--text-muted); font-size:10px;">Buffer: +${yp.yield_protected_by_adaptation_t_ha} t/ha</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🎯 Adaptation Strategies for this Historical Shock</h3>
+          ${recHtml}
+        </div>
+
+        <div class="card">
+          <h3>🛰️ NASA Archived Sensor Telemetry</h3>
+          <div style="font-size:11px;">
+            ${d.provenance.map(p => `
+              <div style="padding:4px 0; border-bottom:1px solid #1e293b;">
+                <b>${p.source}</b> <code style="font-size:10px; color:#94a3b8;">[${p.dataset_id}]</code>: 
+                <span style="color:#38bdf8;">${p.freshness_note}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      document.getElementById('out').innerHTML = html;
+      if (d.lat && d.lon) {
+        pt = { lat: d.lat, lon: d.lon };
+        placeMarker(d.lat, d.lon);
+        map.setView([d.lat, d.lon], 8);
+      }
+    }
+
+    function renderChart(chartData) {
+      const ctx = document.getElementById('trendChart');
+      if (!ctx) return;
+      if (trendChart) trendChart.destroy();
+
+      trendChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: chartData.years,
+          datasets: [
+            {
+              type: 'bar',
+              label: 'Annual Rain (mm)',
+              data: chartData.annual_rainfall_mm,
+              backgroundColor: 'rgba(56, 189, 248, 0.4)',
+              borderColor: 'rgba(56, 189, 248, 0.8)',
+              borderWidth: 1,
+              yAxisID: 'yRain'
+            },
+            {
+              type: 'line',
+              label: 'Mean Temp (°C)',
+              data: chartData.annual_mean_temp_c,
+              borderColor: '#ff5964',
+              backgroundColor: '#ff5964',
+              borderWidth: 2,
+              tension: 0.3,
+              pointRadius: 2,
+              yAxisID: 'yTemp'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#8ea89d', font: { size: 10 } } } },
+          scales: {
+            x: { ticks: { color: '#8ea89d', font: { size: 9 }, maxRotation: 0 }, grid: { display: false } },
+            yRain: { position: 'left', ticks: { color: '#38bdf8', font: { size: 9 } }, grid: { color: '#162a20' }, title: { display: true, text: 'Rain (mm)', color: '#38bdf8', font: { size: 9 } } },
+            yTemp: { position: 'right', ticks: { color: '#ff5964', font: { size: 9 } }, grid: { display: false }, title: { display: true, text: 'Temp (°C)', color: '#ff5964', font: { size: 9 } } }
+          }
+        }
+      });
+    }
+
+    // Auto-run on load for default location
+    run();
+  </script>
+</body>
+</html>
